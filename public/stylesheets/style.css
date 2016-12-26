@@ -1,0 +1,96 @@
+/* FONT */
+@font-face {
+    font-family: zig;
+    src: url('zig.ttf');
+}
+
+
+/* GENERAL */
+body {
+  padding: 10px;
+  font-family: zig, "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  background: #777;
+  color: #f1f1f1;
+}
+
+a {
+  color: #ccc;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+p {
+	margin-bottom: 10px;
+}
+
+
+/* AUTHENTICATION */
+#usernameForm {
+	width: 70%;
+	margin: auto;
+	margin-top: 20px;
+}
+#usernameForm input {
+	width: 200px;
+	text-align: center;
+	margin: auto;
+	margin-bottom: 50px;
+}
+
+
+/* GAME */
+#gameDiv {
+	margin-top: -30px;
+}
+
+#gameCanvas {
+	height: 500px;
+	width: 410px;
+	background: #050505;
+	margin: auto;
+	cursor: none;
+}
+
+h1 {
+	letter-spacing: 12px;
+	margin-bottom: 40px;
+	margin-top: 0px;
+}
+
+#yourScore {
+	font-size: 30px;
+}
+
+#game span {
+	color: #ccc;
+	cursor: pointer;
+}
+
+
+/* HIGH SCORES */
+#highScoresTable {
+	margin: auto;
+	text-align: center;
+	margin-top: 30px;
+}
+
+#highScoresTable th {
+	text-align: center;
+	font-size: 18px;
+}
+
+#highScoresTable th, td {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 600px) {
+	h1 {
+		font-size: 20px;
+	}
+}
