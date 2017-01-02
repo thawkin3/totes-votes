@@ -1,0 +1,24 @@
+<div>	
+	<div class="container">
+        <div class="row">
+            <div class="text-center voteOnPollContent">
+                <form id="voteOnPollForm" role="form" ng-submit="voteOnPoll(selectedChoice)">
+                    <div class="form-group" ng-show="showPollVoteOptions">
+                    	<div class="questionText">{{ poll.Question }}</div>
+                    </div>
+                    <div class="form-group" ng-show="showPollVoteOptions" ng-repeat="choice in poll.Choices track by $index">
+                        <div class="answerChoice" ng-click="voteForChoice($index)" ng-class="{'selected': $index == selectedChoice}">{{ choice }}</div>
+                    </div>
+                    <div class="form-group" ng-show="showPollVoteOptions">
+                        <button type="submit" class="btn btn-lg btn-success">Submit your vote</button>
+                    </div>
+
+                    <div class="errorMessages">
+                        <div class="errorMessage" ng-show="showErrorMessageCannotGetPoll">Sorry! We weren't able to find this poll for you.<br>Please double-check that your URL is correct.</div>
+                        <div class="errorMessage" ng-show="showErrorMessageCannotVoteOnPoll">Sorry! Something went wrong and your vote was not submitted.<br>Please try again later.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

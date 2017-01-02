@@ -5,14 +5,14 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('CrossyBlock:server');
+var debug = require('debug')('TotesVotes:server');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3011');
+var port = normalizePort(process.env.PORT || '3012');
 app.set('port', port);
 
 /**

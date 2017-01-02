@@ -7,42 +7,55 @@ router.get('/', function(req, res, next) {
 });
 
 /* Set up mongoose in order to connect to mongo database */
-var mongoose = require('mongoose'); //Adds mongoose as a usable dependency
+// Adds mongoose as a usable dependency
+var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/crossyBlockDB'); //Connects to a mongo database called "crossyBlockDB"
+// Connects to a mongo database called "totesVotesDB"
+mongoose.connect('mongodb://localhost/totesVotesDB');
 
-var userSchema = mongoose.Schema({ //Defines the User Schema for this database
+// Defines the User Schema for this database
+var userSchema = mongoose.Schema({
   Username: String,
   Password: String
 });
 
-var User = mongoose.model('User', userSchema); //Makes an object from that schema as a model
+// Makes an object from that schema as a model
+var User = mongoose.model('User', userSchema);
 
-var scoreSchema = mongoose.Schema({ //Defines the Score Schema for this database
+// Defines the Poll Schema for this database
+var pollSchema = mongoose.Schema({
   Username: String,
-  Score: Number
+  Question: String,
+  Choices: Array,
+  Votes: Array,
+  TotalVotes: Number,
+  AllowNewChoices: Boolean
 });
 
-var Score = mongoose.model('Score', scoreSchema); //Makes an object from that schema as a model
+// Makes an object from that schema as a model
+var Poll = mongoose.model('Poll', pollSchema);
 
-var db = mongoose.connection; //Saves the connection as a variable to use
-db.on('error', console.error.bind(console, 'connection error:')); //Checks for connection errors
-db.once('open', function() { //Lets us know when we're connected
+// Saves the connection as a variable to use
+var db = mongoose.connection;
+// Checks for connection errors
+db.on('error', console.error.bind(console, 'connection error:'));
+// Lets us know when we're connected
+db.once('open', function() {
   console.log('Connected');
 });
 
 /* POST a user */
-router.post('/adduser', function(req, res, next) {
-  console.log("POST adduser route"); //[1]
-  console.log(req.body); //[2]
+router.post('/api/v1/users/addUser', function(req, res, next) {
+  console.log("POST adduser route");
+  console.log(req.body);
 
   User.findOne({ Username: req.body.Username }, function(err, user) {
 	  console.log(user);
 	  if (user == null) {
-		  var newUser = new User(req.body); //[3]
+		  var newUser = new User(req.body);
   	      console.log(newUser);
   	  	  console.log(req.body.Username);
-		  newUser.save(true, function(err, post) { //[4]
+		  newUser.save(true, function(err, post) {
 		    if (err) return console.error(err);
 		    console.log(post);
 		    res.sendStatus(200);
@@ -56,9 +69,9 @@ router.post('/adduser', function(req, res, next) {
 
 
 /* GET (fake POST) a user */
-router.post('/getuser', function(req, res, next) {
-  console.log("POST getuser route"); //[1]
-  console.log(req.body); //[2]
+router.post('/api/v1/users/getUser', function(req, res, next) {
+  console.log("POST users route");
+  console.log(req.body);
   console.log(req.body.Username);
 
   User.findOne({ Username: req.body.Username }, function(err, user) {
@@ -68,39 +81,90 @@ router.post('/getuser', function(req, res, next) {
 			console.log("found you!");
 		    res.sendStatus(200);
 		} else {
-			res.sendStatus(500);
+			res.sendStatus(403);
 		}
 	  } else {
-		res.sendStatus(400);
+		res.sendStatus(403);
 	  }
   });
 });
 
-/* POST a score */
-router.post('/addscore', function(req, res, next) {
-  console.log("POST addscore route"); //[1]
-  console.log(req.body); //[2]
+/* POST a new poll */
+router.post('/api/v1/polls', function(req, res, next) {
+  console.log("POST createpoll route");
+  console.log(req.body);
 
-  var newScore = new Score(req.body); //[3]
-  console.log(newScore);
-  console.log(req.body.Score);
+  var newPoll = new Poll(req.body);
+  console.log(newPoll);
+  console.log(req.body.Poll);
   
-  newScore.save(true, function(err, post) { //[4]
-    if (err) return console.error(err);
+  newPoll.save(true, function(err, post) {
+    // if (err) return console.error(err);
+    if (err) res.sendStatus(500);
     console.log(post);
-    res.sendStatus(200);
+    // res.sendStatus(200);
+    res.json(post);
   });
 });
 
-/* GET high scores */
-router.get('/getHighScores', function(req,res,next) {
-	console.log("In high score route");
-	var query = Score.find().limit(10).select({Username:1,Score:1}).sort({Score:-1});
-	query.exec(function(err,scores) {
-			if (err) return console.error(err); //If there's an error, print it out
-			else {
-			    console.log(scores); //Otherwise console log the comments you found
-			    res.json(scores); //Then send them
+/* GET all polls for a user */
+router.get('/api/v1/polls/:username', function(req, res, next) {
+	console.log("GET getpolls route");
+	var query = Poll.find({ Username: req.params.username }).sort({ QuestionText: 1 });
+	query.exec(function(err, polls) {
+			// If there's an error, print it out
+			// if (err) return console.error(err);
+			if (err) {
+				res.sendStatus(404);
+			// Otherwise, return all the polls for that user
+			} else {
+			    res.json(polls);
+			}
+
+	});
+});
+
+/* GET a single poll for a user */
+router.get('/api/v1/polls/:username/:pollId', function(req, res, next) {
+	console.log("GET single getpolls route");
+	var query = Poll.findOne({ Username: req.params.username, _id: req.params.pollId });
+	query.exec(function(err, poll) {
+			// If there's an error, print it out
+			// if (err) return console.error(err);
+			if (err) {
+				res.sendStatus(404);
+			// Otherwise, return the single poll for that user
+			} else {
+			    res.json(poll);
+			}
+
+	});
+});
+
+/* PUT a single poll for a user to update that poll */
+/* ALSO */
+/* PUT a single poll for a participant to vote on that poll */
+router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
+	console.log("PUT single getpolls route");
+	var query = Poll.findOne({ Username: req.params.username, _id: req.params.pollId });
+	query.exec(function(err, updatedPoll) {
+			// If there's an error, print it out
+			// if (err) return console.error(err);
+			if (err) {
+				res.sendStatus(404);
+			// Otherwise, update the single poll for that user
+			} else {
+				if (req.body.Question != undefined) updatedPoll.Question = req.body.Question;
+				if (req.body.Choices != undefined) updatedPoll.Choices = req.body.Choices;
+				if (req.body.Username != undefined) updatedPoll.Username = req.body.Username;
+				if (req.body.Votes != undefined) updatedPoll.Votes = req.body.Votes;
+				if (req.body.TotalVotes != undefined) updatedPoll.TotalVotes = req.body.TotalVotes;
+				if (req.body.AllowNewChoices != undefined) updatedPoll.AllowNewChoices = req.body.AllowNewChoices;
+				updatedPoll.save(true, function(err, put) {
+				    if (err) return console.error(err);
+				    console.log(put);
+				    res.sendStatus(200);
+				});
 			}
 
 	});

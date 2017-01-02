@@ -1,0 +1,41 @@
+<div>	
+	<div class="container">
+        <div class="row">
+            <div class="allPollsContent">
+            	<!-- TODO: add filtering and sorting for the table -->
+	            <table class="table table-bordered" ng-show="showPollsTable">
+	            	<tbody>
+	            		<tr>
+	            			<td class="pollQuestion">Poll Question</td>
+	            			<td class="voteCount">Vote Count</td>
+	            			<td class="pollActions">Actions</td>
+	            		</tr>
+	            		<tr ng-repeat="poll in allPolls | orderBy: 'Question'">
+	            			<td class="pollQuestion">{{ poll.Question }}</td>
+	            			<td class="voteCount">{{ poll.TotalVotes }}</td>
+	            			<td class="pollActions">
+	            				<button class="btn btn-large btn-info" type="button" ng-click="editPoll(poll._id)">Edit</button>
+	            				<button class="btn btn-large btn-info" type="button" ng-click="vote(poll._id)">Vote</button>
+	            				<button class="btn btn-large btn-info" type="button" ng-click="viewResults(poll._id)">View Results</button>
+	            			</td>
+	            		</tr>
+	            	</tbody>
+	            </table>
+
+	            <div class="noPolls" ng-show="showNoPollsMessage">
+		            <p>No polls yet. Click the button below to create your first poll.</p>
+
+	                <form id="getStartedForm" role="form" ng-submit="getStarted()">
+					    <div class="form-group">
+					        <button type="submit" class="btn btn-lg btn-success">Create a new poll</button>
+					    </div>
+					</form>
+				</div>
+
+				<div class="errorMessages">
+                    <div class="errorMessage" ng-show="showErrorMessageCannotGetPolls">Sorry! We weren't able to load your polls at the moment.<br>Please try again later.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

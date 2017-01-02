@@ -1,0 +1,38 @@
+<div>	
+	<div class="container">
+        <div class="row">
+            <div class="text-center editPollContent">
+                <form id="editPollForm" role="form" ng-submit="editPoll()">
+	                <div ng-show="pollExists">    
+	                    <div class="form-group">
+	                        <input type="text" class="form-control" id="questionText" placeholder="Question Text" ng-model="poll.Question">
+	                    </div>
+	                    <div class="form-group" ng-repeat="choice in poll.Choices track by $index">
+	                        <input type="text" class="form-control answerChoice" id="{{'choice' + $index}}" placeholder="Write your choice here" ng-model="poll.Choices[$index]" ng-model-options="{ updateOn: 'blur' }">
+	                        <button type="button" class="btn btn-default btn-danger plus-minus" aria-label="Remove Choice" ng-click="removeChoice($index)">
+	                        	<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+	                        </button>
+	                        <button type="button" class="btn btn-default btn-success plus-minus" aria-label="Add Choice" ng-click="addChoice($index)">
+	                        	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	                        </button>
+	                    </div>
+	                    <div class="checkbox">
+	                    	<label>
+	                        	<input type="checkbox" class="form-control" id="allowNewChoices" ng-model="poll.AllowNewChoices"> Allow voters to add new choices
+	                    	</label>
+	                    </div>
+	                    <div class="form-group">
+	                        <button type="submit" class="btn btn-lg btn-success">Submit edits to your poll</button>
+	                    </div>
+	                </div>
+
+                    <div class="errorMessages">
+                        <div class="errorMessage" ng-show="showErrorMessageCannotGetPoll">Sorry! We weren't able to find this poll for you.<br>Please double-check that your URL is correct.</div>
+                        <div class="errorMessage" ng-show="showErrorMessageMissingQuestionText">Please enter some question text</div>
+                        <div class="errorMessage" ng-show="showErrorMessageLessThanTwoChoices">Please include at least two answer choices</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

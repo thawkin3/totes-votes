@@ -1,0 +1,19 @@
+<div>	
+	<div class="container">
+        <div class="row">
+            <div class="text-center pollResultsContent">
+
+            	<div class="questionText" ng-show="showResultsGraph">{{ poll.Question }}</div>
+
+            	<div id="chart" ng-show="showResultsGraph"></div>
+
+                <div class="errorMessages">
+                    <div class="errorMessage" ng-show="showErrorMessageCannotGetPoll">Sorry! We weren't able to find this poll for you.<br>Please double-check that your URL is correct.</div>
+                    <div class="errorMessage" ng-show="showErrorMessageCannotGetPollResults">Sorry! Something went wrong and we couldn't retrieve your results<br>Please try again later.</div>
+                    <div class="errorMessage" ng-show="showErrorMessageNoVotesYet">You haven't collected any responses yet!</div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
