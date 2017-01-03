@@ -10,9 +10,9 @@
 	            			<td class="voteCount">Vote Count</td>
 	            			<td class="pollActions">Actions</td>
 	            		</tr>
-	            		<tr ng-repeat="poll in allPolls | orderBy: 'Question'">
-	            			<td class="pollQuestion">{{ poll.Question }}</td>
-	            			<td class="voteCount">{{ poll.TotalVotes }}</td>
+	            		<tr ng-repeat="poll in allPolls | orderBy: 'question'">
+	            			<td class="pollQuestion">{{ poll.question }}</td>
+	            			<td class="voteCount">{{ poll.totalVotes }}</td>
 	            			<td class="pollActions">
 	            				<button class="btn btn-large btn-info" type="button" ng-click="editPoll(poll._id)">Edit</button>
 	            				<button class="btn btn-large btn-info" type="button" ng-click="vote(poll._id)">Vote</button>

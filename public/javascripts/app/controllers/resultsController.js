@@ -2,10 +2,6 @@
 
 	var resultsController = function ($scope, $routeParams, $rootScope, $http, $location) {
 
-		// GET THE CURRENT USER'S USERNAME
-		// TODO: authenticate the correct user here
-		$scope.username = "tylerh";
-
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showResultsGraph = false;
 
@@ -23,20 +19,20 @@
 			if ($scope.poll.length == 0) {
 				$scope.showErrorMessageCannotGetPoll = true;
 			} else {
-				if ($scope.poll.TotalVotes == 0) {
+				if ($scope.poll.totalVotes == 0) {
 					$scope.showErrorMessageNoVotesYet = true;
 				} else {
 					// SET UP YOUR DATA TO BE IN THE FORMAT WE NEED
 					var xAxisLabelArray = ["x"];
 					var columnsLabelArray = ["Votes"];
-					var chartXAxis = xAxisLabelArray.concat($scope.poll.Choices);
-					var chartVotes = columnsLabelArray.concat($scope.poll.Votes);
+					var chartXAxis = xAxisLabelArray.concat($scope.poll.choices);
+					var chartVotes = columnsLabelArray.concat($scope.poll.votes);
 
-					$scope.poll.VotePercentages = [];
-					for (var i = 0; i < $scope.poll.Votes.length; i++) {
-						$scope.poll.VotePercentages.push(parseFloat($scope.poll.Votes[i] / $scope.poll.TotalVotes));
+					$scope.poll.votePercentages = [];
+					for (var i = 0; i < $scope.poll.votes.length; i++) {
+						$scope.poll.votePercentages.push(parseFloat($scope.poll.votes[i] / $scope.poll.totalVotes));
 					}
-					var chartVotePercentages = columnsLabelArray.concat($scope.poll.VotePercentages)
+					var chartVotePercentages = columnsLabelArray.concat($scope.poll.votePercentages)
 
 
 					var chart = c3.generate({
@@ -106,7 +102,7 @@
 		}
 
 		// GET A SINGLE POLL FOR THAT USER
-		$http.get('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
+		$http.get('/api/v1/polls/' + $routeParams.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
 
 	};
 

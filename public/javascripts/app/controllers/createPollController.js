@@ -3,8 +3,7 @@
 	var createPollController = function ($scope, $routeParams, $rootScope, $http, $location) {
 
 		// USERNAME
-		$scope.username = "tylerh";
-		// TODO: actually get the real username when authenticated
+		$scope.username = $rootScope.loggedInUser;
 
 		// INITIALIZE THE CHOICES ARRAY WITH TWO CHOICES
 		$scope.choices = [
@@ -63,12 +62,12 @@
 			} else {
 				$http.post('/api/v1/polls',
 					{
-						Username: $scope.username,
-						Question: $scope.questionText,
-						Choices: $scope.choices,
-						Votes: $scope.votes,
-						TotalVotes: $scope.totalVotes,
-						AllowNewChoices: $scope.allowNewChoices
+						username: $scope.username,
+						question: $scope.questionText,
+						choices: $scope.choices,
+						votes: $scope.votes,
+						totalVotes: $scope.totalVotes,
+						allowNewChoices: $scope.allowNewChoices
 					}
 				).then(pollCreationSuccess, pollCreationError);
 			}

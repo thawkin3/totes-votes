@@ -2,10 +2,6 @@
 
 	var voteController = function ($scope, $routeParams, $rootScope, $http, $location) {
 
-		// GET THE CURRENT USER'S USERNAME
-		// TODO: authenticate the correct user here
-		$scope.username = "tylerh";
-
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showPollVoteOptions = false;
 
@@ -41,7 +37,7 @@
 		// SUCCESS CALLBACK
 		function voteOnPollSuccess (response) {
 			console.log(response.data);
-			$location.path("/results/" + $routeParams.pollId);
+			$location.path("/results/" + $routeParams.username + '/' + $routeParams.pollId);
 		}
 
 		// ERROR CALLBACK
@@ -51,17 +47,17 @@
 		}
 
 		// GET A SINGLE POLL FOR THAT USER
-		$http.get('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
+		$http.get('/api/v1/polls/' + $routeParams.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
 
 		// VOTE ON THE POLL
 		$scope.voteOnPoll = function (selectedChoice) {
-			$scope.poll.Votes[selectedChoice]++;
-			$scope.poll.TotalVotes++;
+			$scope.poll.votes[selectedChoice]++;
+			$scope.poll.totalVotes++;
 
-			$http.put('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId,
+			$http.put('/api/v1/polls/' + $routeParams.username + '/' + $routeParams.pollId,
 				{
-					Votes: $scope.poll.Votes,
-					TotalVotes: $scope.poll.TotalVotes
+					votes: $scope.poll.votes,
+					totalVotes: $scope.poll.totalVotes
 				}
 			).then(voteOnPollSuccess, voteOnPollError);
 		}

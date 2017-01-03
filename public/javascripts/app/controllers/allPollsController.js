@@ -3,8 +3,7 @@
 	var allPollsController = function ($scope, $routeParams, $rootScope, $http, $location) {
 
 		// GET THE CURRENT USER'S USERNAME
-		// TODO: authenticate the correct user here
-		$scope.username = "tylerh";
+		$scope.username = $rootScope.loggedInUser;
 
 		// HIDE ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageCannotGetPolls = false;
@@ -37,17 +36,17 @@
 
 		// EDIT POLL
 		$scope.editPoll = function (pollId) {
-			$location.path('edit/' + pollId);
+			$location.path("edit/" + $scope.username + "/" + pollId);
 		}
 
 		// VIEW POLL RESULTS
 		$scope.viewResults = function (pollId) {
-			$location.path('results/' + pollId);
+			$location.path("results/" + $scope.username + "/" + pollId);
 		}
 
 		// VOTE ON POLL
 		$scope.vote = function (pollId) {
-			$location.path('vote/' + pollId);
+			$location.path("vote/" + $scope.username + "/" + pollId);
 		}
 
 		// CREATE A NEW POLL

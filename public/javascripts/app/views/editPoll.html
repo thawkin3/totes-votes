@@ -5,10 +5,10 @@
                 <form id="editPollForm" role="form" ng-submit="editPoll()">
 	                <div ng-show="pollExists">    
 	                    <div class="form-group">
-	                        <input type="text" class="form-control" id="questionText" placeholder="Question Text" ng-model="poll.Question">
+	                        <input type="text" class="form-control" id="questionText" placeholder="Question Text" ng-model="poll.question">
 	                    </div>
-	                    <div class="form-group" ng-repeat="choice in poll.Choices track by $index">
-	                        <input type="text" class="form-control answerChoice" id="{{'choice' + $index}}" placeholder="Write your choice here" ng-model="poll.Choices[$index]" ng-model-options="{ updateOn: 'blur' }">
+	                    <div class="form-group" ng-repeat="choice in poll.choices track by $index">
+	                        <input type="text" class="form-control answerChoice" id="{{'choice' + $index}}" placeholder="Write your choice here" ng-model="poll.choices[$index]" ng-model-options="{ updateOn: 'blur' }">
 	                        <button type="button" class="btn btn-default btn-danger plus-minus" aria-label="Remove Choice" ng-click="removeChoice($index)">
 	                        	<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 	                        </button>
@@ -18,7 +18,7 @@
 	                    </div>
 	                    <div class="checkbox">
 	                    	<label>
-	                        	<input type="checkbox" class="form-control" id="allowNewChoices" ng-model="poll.AllowNewChoices"> Allow voters to add new choices
+	                        	<input type="checkbox" class="form-control" id="allowNewChoices" ng-model="poll.allowNewChoices"> Allow voters to add new choices
 	                    	</label>
 	                    </div>
 	                    <div class="form-group">

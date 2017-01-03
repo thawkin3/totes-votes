@@ -3,8 +3,7 @@
 	var editPollController = function ($scope, $routeParams, $rootScope, $http, $location) {
 
 		// GET THE CURRENT USER'S USERNAME
-		// TODO: authenticate the correct user here
-		$scope.username = "tylerh";
+		$scope.username = $rootScope.loggedInUser;
 
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.pollExists = false;
@@ -29,16 +28,16 @@
 
 				// ADD CHOICE
 				$scope.addChoice = function (index) {
-					var numberOfChoices = $scope.poll.Choices.length + 1;
-					$scope.poll.Choices.splice(index+1,0,"Answer Choice " + numberOfChoices);
-					$scope.poll.Votes.splice(index+1,0,0);
+					var numberOfChoices = $scope.poll.choices.length + 1;
+					$scope.poll.choices.splice(index+1,0,"Answer Choice " + numberOfChoices);
+					$scope.poll.votes.splice(index+1,0,0);
 				}
 
 				// REMOVE CHOICE
 				$scope.removeChoice = function (index) {
-					if ($scope.poll.Choices.length > 1) {
-						$scope.poll.Choices.splice(index,1);
-						$scope.poll.Votes.splice(index+1,1);
+					if ($scope.poll.choices.length > 1) {
+						$scope.poll.choices.splice(index,1);
+						$scope.poll.votes.splice(index+1,1);
 					}
 				}
 			}
@@ -69,12 +68,12 @@
 		$scope.editPoll = function () {
 			$http.put('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId,
 				{
-					Username: $scope.poll.Username,
-					Question: $scope.poll.Question,
-					Choices: $scope.poll.Choices,
-					Votes: $scope.poll.Votes,
-					TotalVotes: $scope.poll.TotalVotes,
-					AllowNewChoices: $scope.poll.AllowNewChoices
+					username: $scope.poll.username,
+					question: $scope.poll.question,
+					choices: $scope.poll.choices,
+					votes: $scope.poll.votes,
+					totalVotes: $scope.poll.totalVotes,
+					allowNewChoices: $scope.poll.allowNewChoices
 				}
 			).then(updatePollSuccess, updatePollError);
 		}

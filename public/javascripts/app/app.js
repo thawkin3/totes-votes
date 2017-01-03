@@ -4,41 +4,63 @@ app.config(function ($routeProvider){
 	$routeProvider
 		.when('/', {
 			controller: 'homeController',
-			templateUrl:'javascripts/app/views/home.html'
+			templateUrl:'javascripts/app/views/home.html',
+			access: {restricted: false}
 		})
 		.when('/login', {
 			controller: 'loginController',
-			templateUrl:'javascripts/app/views/login.html'
+			templateUrl:'javascripts/app/views/login.html',
+			access: {restricted: false}
 		})
 		.when('/createAccount', {
 			controller: 'createAccountController',
-			templateUrl:'javascripts/app/views/createAccount.html'
+			templateUrl:'javascripts/app/views/createAccount.html',
+			access: {restricted: false}
 		})
 		.when('/createPoll', {
 			controller: 'createPollController',
-			templateUrl:'javascripts/app/views/createPoll.html'
+			templateUrl:'javascripts/app/views/createPoll.html',
+			access: {restricted: true}
 		})
 		.when('/allPolls', {
 			controller: 'allPollsController',
-			templateUrl:'javascripts/app/views/allPolls.html'
+			templateUrl:'javascripts/app/views/allPolls.html',
+			access: {restricted: true}
 		})
-		.when('/vote/:pollId', {
+		.when('/vote/:username/:pollId', {
 			controller: 'voteController',
-			templateUrl:'javascripts/app/views/vote.html'
+			templateUrl:'javascripts/app/views/vote.html',
+			access: {restricted: false}
 		})
-		.when('/edit/:pollId', {
+		.when('/edit/:username/:pollId', {
 			controller: 'editPollController',
-			templateUrl:'javascripts/app/views/editPoll.html'
+			templateUrl:'javascripts/app/views/editPoll.html',
+			access: {restricted: true}
 		})
-		.when('/results/:pollId', {
+		.when('/results/:username/:pollId', {
 			controller: 'resultsController',
-			templateUrl:'javascripts/app/views/results.html'
+			templateUrl:'javascripts/app/views/results.html',
+			access: {restricted: false}
 		})
 		.otherwise({ 
-			redirectTo: '/' 
+			redirectTo: '/',
+			access: {restricted: false}
 		});
 });
 
-app.run(function($rootScope) {
-	$rootScope.user = "Guest";
+app.run(function($rootScope, $location, $route, AuthService) {
+	$rootScope.isLoggedIn = AuthService.isLoggedIn();
+	$rootScope.loggedInUser = AuthService.getUsername();
+
+	$rootScope.$on('$routeChangeStart',
+	    function (event, next, current) {
+		    AuthService.getUserStatus()
+		    .then(function () {
+			    if (typeof next.access != 'undefined' && next.access.restricted && AuthService.isLoggedIn() === false) {
+	    			$location.path('/login');
+	    			$route.reload();
+	    		}
+	    	});
+    	}
+	);
 });

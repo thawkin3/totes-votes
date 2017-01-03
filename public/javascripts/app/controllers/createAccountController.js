@@ -1,6 +1,6 @@
 (function() {
 
-	var createAccountController = function ($scope, $routeParams, $rootScope, $http) {
+	var createAccountController = function ($scope, $routeParams, $rootScope, $http, $location, AuthService) {
 
 		// HIDE ALL ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageMissingUsername = false;
@@ -11,12 +11,24 @@
 		// SUCCESS CALLBACK
 		function userCreationSuccess () {
 			console.log("user created!");
-			alert("user created!");
+    		$scope.error = false;
+            $scope.errorMessage = "";
+	        $scope.disabled = false;
+        	$scope.username = "";
+        	$scope.password = "";
+	        $scope.passwordSecond = "";
+			$location.path("/login");
 		}
 
 		// ERROR CALLBACK
 		function userCreationError () {
 			console.log("username taken");
+			$scope.error = true;
+	        $scope.errorMessage = "Something went wrong!";
+	        $scope.disabled = false;
+	        $scope.username = "";
+	        $scope.password = "";
+	        $scope.passwordSecond = "";
 			$scope.showErrorMessageUsernameTaken = true;
 		}
 
@@ -38,18 +50,27 @@
 				console.log("passwords do not match");
 				$scope.showErrorMessageNonMatchingPasswords = true;
 			} else {
-				$http.post('/api/v1/users/addUser',
-					{
-						Username: $scope.username,
-						Password: $scope.password
-					}
-				).then(userCreationSuccess, userCreationError);
+				// initial values
+			    $scope.error = false;
+			    $scope.disabled = true;
+
+			    // call register from service
+			    AuthService.register($scope.username, $scope.password)
+			    .then(userCreationSuccess, userCreationError);
+
+
+				// $http.post('/api/v1/users/register',
+				// 	{
+				// 		username: $scope.username,
+				// 		password: $scope.password
+				// 	}
+				// ).then(userCreationSuccess, userCreationError);
 			}
 		}
 
 	};
 
-	createAccountController.$inject = ['$scope', '$routeParams', '$rootScope', '$http'];
+	createAccountController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('createAccountController', createAccountController);
