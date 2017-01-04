@@ -187,6 +187,12 @@ html, body {
 .voteOnPollContent #voteOnPollForm .answerChoice.selected {
 	background: #888;
 }
+.voteOnPollContent #voteOnPollForm .other {
+	visibility: hidden;
+}
+.voteOnPollContent #voteOnPollForm .other.selected {
+	visibility: visible;
+}
 
 
 /*****************************/

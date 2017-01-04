@@ -9,11 +9,18 @@
                     <div class="form-group" ng-show="showPollVoteOptions" ng-repeat="choice in poll.choices track by $index">
                         <div class="answerChoice" ng-click="voteForChoice($index)" ng-class="{'selected': $index == selectedChoice}">{{ choice }}</div>
                     </div>
+                    <div class="form-group" ng-show="showPollVoteOptions && poll.allowNewChoices">
+                        <div class="answerChoice" ng-click="voteForChoice(-99)" ng-class="{'selected': -99 == selectedChoice}">Other (please specify)</div>
+                    </div>
+                    <div class="form-group" ng-show="showPollVoteOptions && poll.allowNewChoices">
+                        <input type="text" class="form-control other" placeholder="Write your answer here" ng-model="otherTextEntry" ng-model-options="{ updateOn: 'blur' }" ng-class="{'selected': -99 == selectedChoice}">
+                    </div>
                     <div class="form-group" ng-show="showPollVoteOptions">
                         <button type="submit" class="btn btn-lg btn-success">Submit your vote</button>
                     </div>
 
                     <div class="errorMessages">
+                    	<div class="errorMessage" ng-show="showErrorMessageMissingOtherText">Please enter text for your Other choice</div>
                         <div class="errorMessage" ng-show="showErrorMessageCannotGetPoll">Sorry! We weren't able to find this poll for you.<br>Please double-check that your URL is correct.</div>
                         <div class="errorMessage" ng-show="showErrorMessageCannotVoteOnPoll">Sorry! Something went wrong and your vote was not submitted.<br>Please try again later.</div>
                     </div>
