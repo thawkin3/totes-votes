@@ -12,10 +12,11 @@
 		$scope.showErrorMessageCannotGetPoll = false;
 		$scope.showErrorMessageMissingQuestionText = false;
 		$scope.showErrorMessageLessThanTwoChoices = false;
+		$scope.showErrorMessageEmptyChoices = false;
 
 		// SUCCESS CALLBACK
 		function getPollSuccess (response) {
-			$scope.showErrorMessageCannotGetPolls = false;
+			$scope.showErrorMessageCannotGetPoll = false;
 			console.log(response);
 			$scope.poll = response.data;
 			console.log($scope.poll);
@@ -66,26 +67,28 @@
 
 		// UPDATE THE POLL WITH NEW INFO
 		$scope.editPoll = function () {
-			$http.put('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId,
-				{
-					username: $scope.poll.username,
-					question: $scope.poll.question,
-					choices: $scope.poll.choices,
-					votes: $scope.poll.votes,
-					totalVotes: $scope.poll.totalVotes,
-					allowNewChoices: $scope.poll.allowNewChoices
-				}
-			).then(updatePollSuccess, updatePollError);
-		}
+			$scope.showErrorMessageMissingQuestionText = false;
+			$scope.showErrorMessageLessThanTwoChoices = false;
+			$scope.showErrorMessageEmptyChoices = false;
 
-		// VIEW POLL RESULTS
-		$scope.viewResults = function (pollId) {
-			$location.path('results/' + pollId);
-		}
-
-		// VOTE ON POLL
-		$scope.vote = function (pollId) {
-			$location.path('vote/' + pollId);
+			if ($scope.poll.question == "" || $scope.poll.question == undefined) {
+				$scope.showErrorMessageMissingQuestionText = true;
+			} else if ($scope.poll.choices.length < 2) {
+				$scope.showErrorMessageLessThanTwoChoices = true;
+			} else if ($scope.poll.choices.indexOf("") != -1) {
+				$scope.showErrorMessageEmptyChoices = true;
+			} else {
+				$http.put('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId,
+					{
+						username: $scope.poll.username,
+						question: $scope.poll.question,
+						choices: $scope.poll.choices,
+						votes: $scope.poll.votes,
+						totalVotes: $scope.poll.totalVotes,
+						allowNewChoices: $scope.poll.allowNewChoices
+					}
+				).then(updatePollSuccess, updatePollError);
+			}
 		}
 
 	};

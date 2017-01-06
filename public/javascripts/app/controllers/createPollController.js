@@ -21,6 +21,7 @@
 		// HIDE ALL ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageMissingQuestionText = false;
 		$scope.showErrorMessageLessThanTwoChoices = false;
+		$scope.showErrorMessageEmptyChoices = false;
 
 		// ADD CHOICE
 		$scope.addChoice = function (index) {
@@ -54,11 +55,16 @@
 		$scope.createPoll = function () {
 			$scope.showErrorMessageMissingQuestionText = false;
 			$scope.showErrorMessageLessThanTwoChoices = false;
+			$scope.showErrorMessageEmptyChoices = false;
+
+			console.log($scope.choices);
 
 			if ($scope.questionText == "" || $scope.questionText == undefined) {
 				$scope.showErrorMessageMissingQuestionText = true;
-			} else if ($scope.choices[0] == "" || $scope.choices[0] == undefined || $scope.choices[1] == "" || $scope.choices[1] == undefined) {
+			} else if ($scope.choices.length < 2) {
 				$scope.showErrorMessageLessThanTwoChoices = true;
+			} else if ($scope.choices.indexOf("") != -1) {
+				$scope.showErrorMessageEmptyChoices = true;
 			} else {
 				$http.post('/api/v1/polls',
 					{

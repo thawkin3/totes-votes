@@ -7,6 +7,7 @@
 
 		// HIDE ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageCannotGetPolls = false;
+		$scope.showErrorMessageCannotDeletePoll = false;
 
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showNoPollsMessage = false;
@@ -20,15 +21,30 @@
 			console.log($scope.allPolls);
 			if ($scope.allPolls.length == 0) {
 				$scope.showNoPollsMessage = true;
+				$scope.showPollsTable = false;
 			} else {
+				$scope.showNoPollsMessage = false;
 				$scope.showPollsTable = true;
 			}
 		}
 
-		// ERROR CALLBACK
+		// DELETE ERROR CALLBACK
 		function getAllPollsError (response) {
 			console.error("error in getting polls");
 			$scope.showErrorMessageCannotGetPolls = true;
+		}
+
+		// DELETE SUCCESS CALLBACK
+		function deletePollSuccess (response) {
+			$scope.showErrorMessageCannotDeletePoll = false;
+			console.log(response);
+			$http.get('/api/v1/polls/' + $scope.username).then(getAllPollsSuccess, getAllPollsError);
+		}
+
+		// ERROR CALLBACK
+		function deletePollError (response) {
+			console.error("error in deleting poll");
+			$scope.showErrorMessageCannotDeletePoll = true;
 		}
 
 		// GET ALL THE POLLS FOR THAT USER
@@ -47,6 +63,11 @@
 		// VOTE ON POLL
 		$scope.vote = function (pollId) {
 			$location.path("vote/" + $scope.username + "/" + pollId);
+		}
+
+		// DELETE POLL
+		$scope.delete = function (pollId) {
+			$http.delete('/api/v1/polls/' + $scope.username + "/" + pollId).then(deletePollSuccess, deletePollError);
 		}
 
 		// CREATE A NEW POLL

@@ -157,7 +157,7 @@ router.get('/api/v1/users/status', function(req, res) {
 
 /* POST a new poll */
 router.post('/api/v1/polls', function(req, res, next) {
-  console.log("POST createpoll route");
+  console.log("POST create poll route");
   console.log(req.body);
 
   var newPoll = new Poll(req.body);
@@ -175,7 +175,7 @@ router.post('/api/v1/polls', function(req, res, next) {
 
 /* GET all polls for a user */
 router.get('/api/v1/polls/:username', function(req, res, next) {
-	console.log("GET getpolls route");
+	console.log("GET polls route");
 	var query = Poll.find({ username: req.params.username }).sort({ questionText: 1 });
 	query.exec(function(err, polls) {
 			// If there's an error, print it out
@@ -192,7 +192,7 @@ router.get('/api/v1/polls/:username', function(req, res, next) {
 
 /* GET a single poll for a user */
 router.get('/api/v1/polls/:username/:pollId', function(req, res, next) {
-	console.log("GET single getpolls route");
+	console.log("GET single poll route");
 	var query = Poll.findOne({ username: req.params.username, _id: req.params.pollId });
 	query.exec(function(err, poll) {
 			// If there's an error, print it out
@@ -211,7 +211,7 @@ router.get('/api/v1/polls/:username/:pollId', function(req, res, next) {
 /* ALSO */
 /* PUT a single poll for a participant to vote on that poll */
 router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
-	console.log("PUT single getpolls route");
+	console.log("PUT single poll route");
 	var query = Poll.findOne({ username: req.params.username, _id: req.params.pollId });
 	query.exec(function(err, updatedPoll) {
 			// If there's an error, print it out
@@ -231,6 +231,23 @@ router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
 				    console.log(put);
 				    res.sendStatus(200);
 				});
+			}
+
+	});
+});
+
+/* DELETE a single poll for a user */
+router.delete('/api/v1/polls/:username/:pollId', function(req, res, next) {
+	console.log("DELETE single poll route");
+	var query = Poll.remove({ username: req.params.username, _id: req.params.pollId });
+	query.exec(function(err) {
+			// If there's an error, print it out
+			// if (err) return console.error(err);
+			if (err) {
+				res.sendStatus(500);
+			// Otherwise, delete the single poll for that user
+			} else {
+				res.sendStatus(200);
 			}
 
 	});

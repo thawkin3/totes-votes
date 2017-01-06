@@ -3,9 +3,8 @@ var app = angular.module('TotesVotes', ['ngRoute']);
 app.config(function ($routeProvider){
 	$routeProvider
 		.when('/', {
-			controller: 'homeController',
-			templateUrl:'javascripts/app/views/home.html',
-			access: {restricted: false}
+			redirectTo: '/allPolls',
+			access: {restricted: true}
 		})
 		.when('/login', {
 			controller: 'loginController',
@@ -43,8 +42,8 @@ app.config(function ($routeProvider){
 			access: {restricted: false}
 		})
 		.otherwise({ 
-			redirectTo: '/',
-			access: {restricted: false}
+			redirectTo: '/allPolls',
+			access: {restricted: true}
 		});
 });
 
