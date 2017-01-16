@@ -163,6 +163,24 @@ html, body {
 .allPollsContent table tbody .pollActions {
 	width: 40%;
 }
+@media screen and (max-width: 991px) {
+	.allPollsContent table tbody .pollActions .btn {
+		margin-bottom: 6px;
+	}
+	.allPollsContent table tbody .pollActions .btn.deletePollButton {
+		margin-bottom: 0px;
+	}
+}
+@media screen and (max-width: 698px) {
+	.allPollsContent table tbody .pollActions .btn {
+		display: block;
+		width: 100%;
+		margin-bottom: 6px;
+	}
+	.allPollsContent table tbody .pollActions .btn.deletePollButton {
+		margin-bottom: 0px;
+	}
+}
 
 
 /*****************************/

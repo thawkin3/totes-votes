@@ -17,28 +17,6 @@ var mongoose = require('mongoose');
 // Connects to a mongo database called "totesVotesDB"
 mongoose.connect('mongodb://localhost/totesVotesDB');
 
-// // Defines the User Schema for this database
-// var userSchema = mongoose.Schema({
-//   Username: String,
-//   Password: String
-// });
-
-// // Makes an object from that schema as a model
-// var User = mongoose.model('User', userSchema);
-
-// // Defines the Poll Schema for this database
-// var pollSchema = mongoose.Schema({
-//   Username: String,
-//   Question: String,
-//   Choices: Array,
-//   Votes: Array,
-//   TotalVotes: Number,
-//   AllowNewChoices: Boolean
-// });
-
-// // Makes an object from that schema as a model
-// var Poll = mongoose.model('Poll', pollSchema);
-
 // Saves the connection as a variable to use
 var db = mongoose.connection;
 // Checks for connection errors
@@ -48,8 +26,6 @@ db.once('open', function() {
   console.log('Connected');
 });
 
-
-// PASSPORT TUTORIAL
 router.post('/api/v1/users/register', function(req, res) {
   User.register(new User({ username: req.body.username }),
     req.body.password, function(err, account) {
@@ -101,59 +77,15 @@ router.get('/api/v1/users/logout', function(req, res) {
 router.get('/api/v1/users/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
-      status: false
+      status: false,
+      username: null
     });
   }
   res.status(200).json({
-    status: true
+    status: true,
+    username: req.user.username
   });
 });
-// END PASSPORT TUTORIAL
-
-/* POST a user */
-// router.post('/api/v1/users/addUser', function(req, res, next) {
-//   console.log("POST adduser route");
-//   console.log(req.body);
-
-//   User.findOne({ username: req.body.username }, function(err, user) {
-// 	  console.log(user);
-// 	  if (user == null) {
-// 		  var newUser = new User(req.body);
-//   	      console.log(newUser);
-//   	  	  console.log(req.body.username);
-// 		  newUser.save(true, function(err, post) {
-// 		    if (err) return console.error(err);
-// 		    console.log(post);
-// 		    res.sendStatus(200);
-// 		  });
-// 	  } else {
-// 	  	res.sendStatus(500);
-// 	  }
-
-//   });
-// });
-
-
-/* GET (fake POST) a user */
-// router.post('/api/v1/users/getUser', function(req, res, next) {
-//   console.log("POST users route");
-//   console.log(req.body);
-//   console.log(req.body.username);
-
-//   User.findOne({ username: req.body.username }, function(err, user) {
-// 	  console.log(user);
-// 	  if (user !== null) {
-// 		if (user.password == req.body.password) {
-// 			console.log("found you!");
-// 		    res.sendStatus(200);
-// 		} else {
-// 			res.sendStatus(403);
-// 		}
-// 	  } else {
-// 		res.sendStatus(403);
-// 	  }
-//   });
-// });
 
 /* POST a new poll */
 router.post('/api/v1/polls', function(req, res, next) {

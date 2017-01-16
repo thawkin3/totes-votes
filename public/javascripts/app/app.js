@@ -52,16 +52,18 @@ app.run(function($rootScope, $location, $window, $route, AuthService) {
     $window.ga('create', 'UA-90393466-1', 'auto');
 
     // AUTHENTICATION
-	$rootScope.isLoggedIn = AuthService.isLoggedIn();
-	$rootScope.loggedInUser = AuthService.getUsername();
 	$rootScope.$on('$routeChangeStart', function (event, next, current) {
 	    AuthService.getUserStatus()
 	    .then(function () {
+        	$rootScope.isLoggedIn = AuthService.isLoggedIn();
+    		$rootScope.loggedInUser = AuthService.getUsername();
 		    if (typeof next.access != 'undefined' && next.access.restricted && !AuthService.isLoggedIn()) {
+    		// if (next.access.restricted && !AuthService.isLoggedIn()) {
     			$location.path('/login');
     			$route.reload();
     		}
     	});
+    	
     });
 
 	// GOOGLE ANALYTICS FOR EACH VIEW

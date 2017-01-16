@@ -25,11 +25,7 @@ angular.module('TotesVotes').factory('AuthService',
     }
 
     function getUsername () {
-      if (user) {
-        return loggedInUser;
-      } else {
-        return undefined;
-      }
+      return loggedInUser;
     }
 
     function getUserStatus () {
@@ -41,6 +37,7 @@ angular.module('TotesVotes').factory('AuthService',
         } else {
           user = false;
         }
+        loggedInUser = data.username;
       })
       // handle error
       .error(function (data) {
