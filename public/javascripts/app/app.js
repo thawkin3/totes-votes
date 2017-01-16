@@ -47,19 +47,25 @@ app.config(function ($routeProvider){
 		});
 });
 
-app.run(function($rootScope, $location, $route, AuthService) {
+app.run(function($rootScope, $location, $window, $route, AuthService) {
+    // GOOGLE ANALYTICS ID
+    $window.ga('create', 'UA-90393466-1', 'auto');
+
+    // AUTHENTICATION
 	$rootScope.isLoggedIn = AuthService.isLoggedIn();
 	$rootScope.loggedInUser = AuthService.getUsername();
+	$rootScope.$on('$routeChangeStart', function (event, next, current) {
+	    AuthService.getUserStatus()
+	    .then(function () {
+		    if (typeof next.access != 'undefined' && next.access.restricted && !AuthService.isLoggedIn()) {
+    			$location.path('/login');
+    			$route.reload();
+    		}
+    	});
+    });
 
-	$rootScope.$on('$routeChangeStart',
-	    function (event, next, current) {
-		    AuthService.getUserStatus()
-		    .then(function () {
-			    if (typeof next.access != 'undefined' && next.access.restricted && !AuthService.isLoggedIn()) {
-	    			$location.path('/login');
-	    			$route.reload();
-	    		}
-	    	});
-    	}
-	);
+	// GOOGLE ANALYTICS FOR EACH VIEW
+	$rootScope.$on('$routeChangeSuccess', function (event) {
+    	$window.ga('send', 'pageview', $location.path());
+	});
 });
