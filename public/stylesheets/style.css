@@ -154,14 +154,38 @@ html, body {
 .allPollsContent table tbody tr td {
 	vertical-align: middle;
 }
+.allPollsContent table .tableSortHeader {
+	cursor: pointer;
+}
 .allPollsContent table tbody .pollQuestion {
 	width: 50%;
 }
 .allPollsContent table tbody .voteCount {
-	width: 10%;
+	width: 20%;
 }
 .allPollsContent table tbody .pollActions {
-	width: 40%;
+	width: 30%;
+}
+.allPollsContent .glyphicon {
+	top: 2px;
+}
+.allPollsContent .glyphicon.transparent {
+	opacity: 0.5;
+}
+.allPollsContent .search-box {
+	max-width: 250px;
+	margin-bottom: 20px;
+}
+@media screen and (max-width: 1199px) {
+	.allPollsContent table tbody .pollQuestion {
+		width: 45%;
+	}
+	.allPollsContent table tbody .voteCount {
+		width: 20%;
+	}
+	.allPollsContent table tbody .pollActions {
+		width: 35%;
+	}
 }
 @media screen and (max-width: 991px) {
 	.allPollsContent table tbody .pollActions .btn {
@@ -170,8 +194,17 @@ html, body {
 	.allPollsContent table tbody .pollActions .btn.deletePollButton {
 		margin-bottom: 0px;
 	}
+	.allPollsContent table tbody .pollQuestion {
+		width: 45%;
+	}
+	.allPollsContent table tbody .voteCount {
+		width: 20%;
+	}
+	.allPollsContent table tbody .pollActions {
+		width: 35%;
+	}
 }
-@media screen and (max-width: 698px) {
+@media screen and (max-width: 709px) {
 	.allPollsContent table tbody .pollActions .btn {
 		display: block;
 		width: 100%;
@@ -179,6 +212,9 @@ html, body {
 	}
 	.allPollsContent table tbody .pollActions .btn.deletePollButton {
 		margin-bottom: 0px;
+	}
+	.allPollsContent .search-box {
+		max-width: 200px;
 	}
 }
 

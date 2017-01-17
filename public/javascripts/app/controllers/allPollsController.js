@@ -13,6 +13,11 @@
 		$scope.showNoPollsMessage = false;
 		$scope.showPollsTable = false;
 
+		// DEFAULT SORT VALUES
+		$scope.sortPollsBy = "question";
+		$scope.sortReverse = false;
+		$scope.searchText = "";
+
 		// SUCCESS CALLBACK
 		function getAllPollsSuccess (response) {
 			$scope.showErrorMessageCannotGetPolls = false;
@@ -73,6 +78,30 @@
 		// CREATE A NEW POLL
 		$scope.getStarted = function () {
 			$location.path("/createPoll");
+		}
+
+		// POLLS TABLE SORTING
+		$scope.changeSort = function (sortName) {
+			if ($scope.sortPollsBy == sortName) {
+				$scope.sortReverse = !$scope.sortReverse;
+			} else {
+				$scope.sortPollsBy = sortName;
+				$scope.sortReverse = false;
+			}
+		}
+
+		// POLLS TABLE FILTERING
+		$scope.tableFilter = function (item, index) {
+			if ($scope.searchText != "") {
+				var searchString = $scope.searchText.toLowerCase();
+				if (item.question.toLowerCase().indexOf(searchString) != -1) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
 		}
 	};
 

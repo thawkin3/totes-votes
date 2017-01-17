@@ -2,15 +2,29 @@
 	<div class="container">
         <div class="row">
             <div class="allPollsContent">
-            	<!-- TODO: add filtering and sorting for the table -->
+	            <div class="tableLayout" ng-show="showPollsTable">
+        			<form class="search-form form-group" action="javascript:void(0);" method="GET">
+    					<input ng-model="searchText" name="q" type="text" class="search-box form-control pull-right" placeholder="Search polls">
+        			</form>
+	            </div>
 	            <table class="table table-bordered" ng-show="showPollsTable">
 	            	<tbody>
 	            		<tr>
-	            			<td class="pollQuestion">Poll Question</td>
-	            			<td class="voteCount">Vote Count</td>
+	            			<td class="pollQuestion tableSortHeader" ng-click="changeSort('question')">
+	            				<span>Poll Question</span>
+	            				<span ng-show="sortPollsBy == 'question' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+        						<span ng-show="sortPollsBy == 'question' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+        						<span ng-show="sortPollsBy != 'question'" class="glyphicon glyphicon-triangle-right transparent"></span>
+        					</td>
+	            			<td class="voteCount tableSortHeader" ng-click="changeSort('totalVotes')">
+	            				<span>Vote Count</span>
+	            				<span ng-show="sortPollsBy == 'totalVotes' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+        						<span ng-show="sortPollsBy == 'totalVotes' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+        						<span ng-show="sortPollsBy != 'totalVotes'" class="glyphicon glyphicon-triangle-right transparent"></span>
+	            			</td>
 	            			<td class="pollActions">Actions</td>
 	            		</tr>
-	            		<tr ng-repeat="poll in allPolls | orderBy: 'question'" class="pollRow">
+	            		<tr ng-repeat="poll in allPolls | filter: tableFilter | orderBy: sortPollsBy:sortReverse" class="pollRow">
 	            			<td class="pollQuestion">{{ poll.question }}</td>
 	            			<td class="voteCount">{{ poll.totalVotes }}</td>
 	            			<td class="pollActions">
