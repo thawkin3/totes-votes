@@ -38,7 +38,9 @@
 				$scope.removeChoice = function (index) {
 					if ($scope.poll.choices.length > 1) {
 						$scope.poll.choices.splice(index,1);
-						$scope.poll.votes.splice(index+1,1);
+						var decrementTotalVotesBy = $scope.poll.votes[index];
+						$scope.poll.votes.splice(index,1);
+						$scope.poll.totalVotes -= decrementTotalVotesBy;
 					}
 				}
 			}

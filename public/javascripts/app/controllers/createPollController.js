@@ -57,8 +57,6 @@
 			$scope.showErrorMessageLessThanTwoChoices = false;
 			$scope.showErrorMessageEmptyChoices = false;
 
-			console.log($scope.choices);
-
 			if ($scope.questionText == "" || $scope.questionText == undefined) {
 				$scope.showErrorMessageMissingQuestionText = true;
 			} else if ($scope.choices.length < 2) {

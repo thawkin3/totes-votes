@@ -35,11 +35,10 @@
             <div class="navbar navbar-default" ng-controller="navbarController as navbarCtrl">
                 <h1 class="navbar-btn title">Totes Votes <span class="subtitle">a polling app</span></h1>
                 <div class="buttonSet">
-                    <!-- <button class="btn btn-large btn-primary navbar-btn pull-right" type="button" ng-click="logout()">Log out</button> -->
-                    <button class="btn btn-large btn-primary navbar-btn pull-right" type="button" ng-click="logout()" ng-show="isLoggedIn"><a ng-href="#">Log out</a></button>
-                    <button class="btn btn-large btn-primary navbar-btn pull-right" type="button" ng-show="!isLoggedIn"><a ng-href="#/login">Log in</a></button>
-                    <button class="btn btn-large btn-primary navbar-btn pull-right" type="button" ng-show="isLoggedIn"><a ng-href="#/allPolls">All Polls</a></button>
-                    <button class="btn btn-large btn-primary navbar-btn pull-right" type="button" ng-show="isLoggedIn"><a ng-href="#/createPoll">Create Poll</a></button>
+                    <a class="btn btn-large btn-primary navbar-btn pull-right" ng-click="logout()" ng-show="isLoggedIn">Log out</a>
+                    <a ng-href="#/login" class="btn btn-large btn-primary navbar-btn pull-right" ng-show="!isLoggedIn">Log in</a>
+                    <a ng-href="#/allPolls" class="btn btn-large btn-primary navbar-btn pull-right" ng-show="isLoggedIn">All Polls</a>
+                    <a ng-href="#/createPoll" class="btn btn-large btn-primary navbar-btn pull-right" ng-show="isLoggedIn">Create Poll</a>
                 </div>
             </div>
         </div>

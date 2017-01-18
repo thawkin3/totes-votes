@@ -10,6 +10,11 @@
 		$scope.showErrorMessageCannotGetPollResults = false;
 		$scope.showErrorMessageNoVotesYet = false;
 
+		// INITIALIZE THE VARIABLE FOR THE C3 CHART
+		$scope.chart;
+		$scope.chartData;
+		$scope.chartAxisFormat;
+
 		// SUCCESS CALLBACK
 		function getPollSuccess (response) {
 			$scope.showErrorMessageCannotGetPoll = false;
@@ -23,26 +28,32 @@
 					$scope.showErrorMessageNoVotesYet = true;
 				} else {
 					// SET UP YOUR DATA TO BE IN THE FORMAT WE NEED
-					var xAxisLabelArray = ["x"];
-					var columnsLabelArray = ["Votes"];
-					var chartXAxis = xAxisLabelArray.concat($scope.poll.choices);
-					var chartVotes = columnsLabelArray.concat($scope.poll.votes);
+					// COUNTS
+					$scope.xAxisLabelArray = ["x"];
+					$scope.columnsLabelArray = ["Votes"];
+					$scope.chartXAxis = $scope.xAxisLabelArray.concat($scope.poll.choices);
+					$scope.chartVoteCounts = $scope.columnsLabelArray.concat($scope.poll.votes);
+					$scope.chartVoteCountFormat = ",";
 
+					// PERCENTAGES
 					$scope.poll.votePercentages = [];
 					for (var i = 0; i < $scope.poll.votes.length; i++) {
 						$scope.poll.votePercentages.push(parseFloat($scope.poll.votes[i] / $scope.poll.totalVotes));
 					}
-					var chartVotePercentages = columnsLabelArray.concat($scope.poll.votePercentages)
+					$scope.chartVotePercentages = $scope.columnsLabelArray.concat($scope.poll.votePercentages)
+					$scope.chartVotePercentageFormat = "%,";
 
+					// INITIALIZE THE DATA FORMAT TO COUNTS
+					$scope.chartData = $scope.chartVoteCounts;
+					$scope.chartAxisFormat = $scope.chartVoteCountFormat;
 
-					var chart = c3.generate({
+					$scope.chart = c3.generate({
 					    bindto: '#chart',
 					    size: {
 					    	height: 400
 					    },
 					    color: {
 					    	pattern: ['#d9edf7']
-					    	// pattern: ['#d9534f']
 					    },
 					    interaction: {
 					      enabled: false
@@ -50,8 +61,8 @@
 					    data: {
 					    	x : 'x',
 					        columns: [
-					        	chartXAxis,
-					        	chartVotes
+					        	$scope.chartXAxis,
+					        	$scope.chartData
 					        ],
 					        type: 'bar',
 					        // empty: {
@@ -85,6 +96,9 @@
 				            	padding: {
 				            		bottom: 0,
 				            		top: 20
+				            	},
+				            	tick: {
+				            		format: d3.format($scope.chartAxisFormat)
 				            	}
 				            }
 				        }
@@ -99,6 +113,34 @@
 		function getPollError (response) {
 			console.error("error in getting poll");
 			$scope.showErrorMessageCannotGetPoll = true;
+		}
+
+		// TOGGLE DATA FORMAT
+		$scope.changeDataFormat = function (format) {
+			console.log(format);
+			if (format == 'count') {
+				$scope.chart.load({
+					columns: [
+						$scope.chartXAxis,
+						$scope.chartVoteCounts
+					]
+				});
+				$scope.chartData = $scope.chartVoteCounts;
+				$scope.chartAxisFormat = $scope.chartVoteCountFormat;
+				// $scope.chart.flush();
+			} else if (format == 'percentage') {
+				$scope.chart.load({
+					columns: [
+						$scope.chartXAxis,
+						$scope.chartVotePercentages
+					]
+				});
+				$scope.chartData = $scope.chartVotePercentages;
+				$scope.chartAxisFormat = $scope.chartVotePercentageFormat;
+				// $scope.chart.flush();
+			}
+			console.log($scope.chart);
+			
 		}
 
 		// GET A SINGLE POLL FOR THAT USER
