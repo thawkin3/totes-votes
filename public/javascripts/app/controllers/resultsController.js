@@ -46,12 +46,23 @@
 					$scope.chartVotePercentages = $scope.columnsLabelArray.concat($scope.poll.votePercentages)
 					$scope.chartVotePercentageFormat = "%,";
 
-					// PIE CHART COUNTS
+					// PIE CHART COUNTS AND PERCENTAGES
 					$scope.pieChartCounts = [];
 					for (var i = 0; i < $scope.poll.votes.length; i++) {
 						$scope.pieChartCounts.push([$scope.poll.choices[i], $scope.poll.votes[i]]);
 					}
-					console.log($scope.pieChartCounts);
+
+					// MAKE A COPY OF YOUR DATA FOR SORTING PURPOSES
+					$scope.choices = [];
+					$scope.votes = [];
+					$scope.votePercentages = [];
+					$scope.copyOfResults = [];
+					for (var i = 0; i < $scope.poll.votes.length; i++) {
+						$scope.choices.push($scope.poll.choices[i]);
+						$scope.votes.push($scope.poll.votes[i]);
+						$scope.votePercentages.push($scope.poll.votePercentages[i]);
+						$scope.copyOfResults.push([$scope.poll.choices[i], $scope.poll.votes[i], $scope.poll.votePercentages[i]]);
+					}
 
 					// INITIALIZE THE DATA FORMAT TO COUNTS
 					$scope.chartData = $scope.chartVoteCounts;
@@ -216,20 +227,84 @@
 			}
 			$scope.chart.flush();
 			$scope.buildChart($scope.selectedChartType);
+			$scope.sortResults($scope.sortResultsBy);
 		}
 
 		// TOGGLE RESULTS SORTING
 		$scope.sortResults = function (sortBy) {
-			if (sortBy == 'none') {
-				$scope.sortResultsBy = 'none';
-			} else if (sortBy == 'alphabetical') {
-				$scope.sortResultsBy = 'alphabetical';
-			} else if (sortBy == 'number') {
-				$scope.sortResultsBy = 'number';
+			if ($scope.selectedChartType == 'bar') {
+				if (sortBy == 'none') {
+					$scope.sortResultsBy = 'none';
+					$scope.chartXAxis = $scope.xAxisLabelArray.concat($scope.poll.choices);
+					$scope.chartVoteCounts = $scope.columnsLabelArray.concat($scope.poll.votes);
+					$scope.chartVotePercentages = $scope.columnsLabelArray.concat($scope.poll.votePercentages);
+				} else if (sortBy == 'alphabetical') {
+					$scope.sortResultsBy = 'alphabetical';
+					$scope.copyOfResults.sort(sortingBarChartAlphabeticallyAlgorithm);
+					$scope.chartXAxis = ['x'];
+					$scope.chartVoteCounts = ['Votes'];
+					$scope.chartVotePercentages = ['Votes'];
+					for (var i = 0; i < $scope.poll.choices.length; i++) {
+						$scope.chartXAxis.push($scope.copyOfResults[i][0]);
+						$scope.chartVoteCounts.push($scope.copyOfResults[i][1]);
+						$scope.chartVotePercentages.push($scope.copyOfResults[i][2]);
+					}
+				} else if (sortBy == 'number') {
+					$scope.sortResultsBy = 'number';
+					$scope.copyOfResults.sort(sortingBarChartNumericallyAlgorithm);
+					$scope.chartXAxis = ['x'];
+					$scope.chartVoteCounts = ['Votes'];
+					$scope.chartVotePercentages = ['Votes'];
+					for (var i = 0; i < $scope.poll.choices.length; i++) {
+						$scope.chartXAxis.push($scope.copyOfResults[i][0]);
+						$scope.chartVoteCounts.push($scope.copyOfResults[i][1]);
+						$scope.chartVotePercentages.push($scope.copyOfResults[i][2]);
+					}
+				}
+				$scope.changeDataFormat($scope.selectedFormat);
+			} else if ($scope.selectedChartType == 'pie') {
+				if (sortBy == 'none') {
+					$scope.sortResultsBy = 'none';
+					$scope.pieChartCounts = [];
+					for (var i = 0; i < $scope.poll.votes.length; i++) {
+						$scope.pieChartCounts.push([$scope.poll.choices[i], $scope.poll.votes[i]]);
+					}
+				} else if (sortBy == 'alphabetical') {
+					$scope.sortResultsBy = 'alphabetical';
+					$scope.pieChartCounts.sort(sortingPieChartAlphabeticallyAlgorithm);
+				} else if (sortBy == 'number') {
+					$scope.sortResultsBy = 'number';
+					$scope.pieChartCounts.sort(sortingPieChartNumericallyAlgorithm);
+				}
 			}
 			$scope.chart.flush();
 			$scope.buildChart($scope.selectedChartType);
 		}
+
+		// SORT BAR CHART FUNCTIONS
+		sortingBarChartAlphabeticallyAlgorithm = function (a, b) {
+			if (a[0] < b[0]) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+		sortingBarChartNumericallyAlgorithm = function (a, b) {
+			return a[1]-b[1];
+		}
+
+		// SORT PIE CHART FUNCTIONS
+		sortingPieChartAlphabeticallyAlgorithm = function (a, b) {
+			if (a[0] < b[0]) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+		sortingPieChartNumericallyAlgorithm = function (a, b) {
+			return a[1]-b[1];
+		}
+
 
 		// GET A SINGLE POLL FOR THAT USER
 		$http.get('/api/v1/polls/' + $routeParams.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
