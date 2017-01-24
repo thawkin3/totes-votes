@@ -262,4 +262,22 @@ html, body {
 .pollResultsContent .c3 svg text {
 	fill: #fff;
 }
+.pollResultsContent .c3-tooltip-container {
+	color: #000;
+}
+.pollResultsContent .graphButtons .buttonsRow {
+	text-align: right;
+}
+.pollResultsContent .graphButtons .buttonLabel {
+	position: relative;
+	margin-right: 5px;
+}
+.pollResultsContent .graphButtons .btn {
+	margin-left: 4px;
+}
+.pollResultsContent .graphButtons .btn.selected {
+	color: #fff;
+    background-color: #288DAB;
+    border-color: #288DAB;
+}
 

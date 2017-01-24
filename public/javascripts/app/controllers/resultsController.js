@@ -14,6 +14,9 @@
 		$scope.chart;
 		$scope.chartData;
 		$scope.chartAxisFormat;
+		$scope.selectedFormat = 'count';
+		$scope.selectedChartType = 'bar';
+		$scope.sortResultsBy = 'none';
 
 		// SUCCESS CALLBACK
 		function getPollSuccess (response) {
@@ -28,14 +31,14 @@
 					$scope.showErrorMessageNoVotesYet = true;
 				} else {
 					// SET UP YOUR DATA TO BE IN THE FORMAT WE NEED
-					// COUNTS
+					// BAR CHART COUNTS
 					$scope.xAxisLabelArray = ["x"];
 					$scope.columnsLabelArray = ["Votes"];
 					$scope.chartXAxis = $scope.xAxisLabelArray.concat($scope.poll.choices);
 					$scope.chartVoteCounts = $scope.columnsLabelArray.concat($scope.poll.votes);
 					$scope.chartVoteCountFormat = ",";
 
-					// PERCENTAGES
+					// BAR CHART PERCENTAGES
 					$scope.poll.votePercentages = [];
 					for (var i = 0; i < $scope.poll.votes.length; i++) {
 						$scope.poll.votePercentages.push(parseFloat($scope.poll.votes[i] / $scope.poll.totalVotes));
@@ -43,66 +46,140 @@
 					$scope.chartVotePercentages = $scope.columnsLabelArray.concat($scope.poll.votePercentages)
 					$scope.chartVotePercentageFormat = "%,";
 
+					// PIE CHART COUNTS
+					$scope.pieChartCounts = [];
+					for (var i = 0; i < $scope.poll.votes.length; i++) {
+						$scope.pieChartCounts.push([$scope.poll.choices[i], $scope.poll.votes[i]]);
+					}
+					console.log($scope.pieChartCounts);
+
 					// INITIALIZE THE DATA FORMAT TO COUNTS
 					$scope.chartData = $scope.chartVoteCounts;
 					$scope.chartAxisFormat = $scope.chartVoteCountFormat;
 
-					$scope.chart = c3.generate({
-					    bindto: '#chart',
-					    size: {
-					    	height: 400
-					    },
-					    color: {
-					    	pattern: ['#d9edf7']
-					    },
-					    interaction: {
-					      enabled: false
-					    },
-					    data: {
-					    	x : 'x',
-					        columns: [
-					        	$scope.chartXAxis,
-					        	$scope.chartData
-					        ],
-					        type: 'bar',
-					        // empty: {
-					        // 	label: {
-					        //     	text: "No Data"
-					        // 	}
-				        	// }
-					    },
-					    legend: {
-					    	hide: true
-					    },
-					    bar: {
-					        width: {
-					            ratio: 0.5
-					        }
-					    },
-					    axis: {
-				            x: {
-				                type: 'category',
-				                tick: {
-	                                multiline: false,
-	                                rotate: 0
-	                            },
-				            },
-				            y: {
-				            	min: 0,
-				            	label: {
-				            		text: 'Votes',
-				            		position: 'inner-right'
-				            	},
-				            	padding: {
-				            		bottom: 0,
-				            		top: 20
-				            	},
-				            	tick: {
-				            		format: d3.format($scope.chartAxisFormat)
-				            	}
-				            }
-				        }
-					});
+					$scope.buildChart = function (chartType) {
+
+						if (chartType == 'bar') {
+
+							$scope.chart = c3.generate({
+							    bindto: '#chart',
+							    size: {
+							    	height: 400
+							    },
+							    color: {
+							    	pattern: ['#d9edf7']
+							    },
+							    interaction: {
+							      enabled: true
+							    },
+							    data: {
+							    	x : 'x',
+							        columns: [
+							        	$scope.chartXAxis,
+							        	$scope.chartData
+							        ],
+							        type: 'bar',
+							        // empty: {
+							        // 	label: {
+							        //     	text: "No Data"
+							        // 	}
+						        	// }
+							    },
+							    legend: {
+							    	hide: true
+							    },
+							    bar: {
+							        width: {
+							            ratio: 0.5
+							        }
+							    },
+							    axis: {
+						            x: {
+						                type: 'category',
+						                tick: {
+			                                multiline: false,
+			                                rotate: 0
+			                            },
+						            },
+						            y: {
+						            	min: 0,
+						            	label: {
+						            		text: 'Votes',
+						            		position: 'inner-right'
+						            	},
+						            	padding: {
+						            		bottom: 0,
+						            		top: 20
+						            	},
+						            	tick: {
+						            		format: d3.format($scope.chartAxisFormat)
+						            	}
+						            }
+						        }
+							});
+
+						} else if (chartType == 'pie') {
+							if ($scope.selectedFormat == 'count') {
+								$scope.chart = c3.generate({
+								    bindto: '#chart',
+								    size: {
+								    	height: 400
+								    },
+								    // color: {
+								    // 	pattern: ['#d9edf7']
+								    // },
+								    interaction: {
+								      enabled: true
+								    },
+								    data: {
+								        columns: $scope.pieChartCounts,
+								        type: 'pie'
+								    },
+								    pie: {
+								    	label: {
+						    	            format: function (value, ratio, id) {
+						    	                return d3.format('')(value);
+						    	            }
+						    	        }
+								    },
+								    tooltip: {
+								    	format: {
+								        	value: function (value, ratio, id, index) { 
+								        		return value;
+								        	}
+								    	}
+								    }
+								});
+							} else if ($scope.selectedFormat == 'percentage') {
+								$scope.chart = c3.generate({
+								    bindto: '#chart',
+								    size: {
+								    	height: 400
+								    },
+								    // color: {
+								    // 	pattern: ['#d9edf7']
+								    // },
+								    interaction: {
+								      enabled: true
+								    },
+								    data: {
+								        columns: $scope.pieChartCounts,
+								        type: 'pie'
+								    },
+								    pie: {
+								    	label: {
+						    	            format: function (value, ratio, id) {
+						    	                return d3.format(",.1%")(ratio);
+						    	            }
+						    	        }
+								    }
+								});
+							}
+						}
+
+					}
+
+					$scope.buildChart('bar');
 
 					$scope.showResultsGraph = true;
 				}
@@ -117,30 +194,41 @@
 
 		// TOGGLE DATA FORMAT
 		$scope.changeDataFormat = function (format) {
-			console.log(format);
 			if (format == 'count') {
-				$scope.chart.load({
-					columns: [
-						$scope.chartXAxis,
-						$scope.chartVoteCounts
-					]
-				});
+				$scope.selectedFormat = 'count';
 				$scope.chartData = $scope.chartVoteCounts;
 				$scope.chartAxisFormat = $scope.chartVoteCountFormat;
-				// $scope.chart.flush();
 			} else if (format == 'percentage') {
-				$scope.chart.load({
-					columns: [
-						$scope.chartXAxis,
-						$scope.chartVotePercentages
-					]
-				});
+				$scope.selectedFormat = 'percentage';
 				$scope.chartData = $scope.chartVotePercentages;
 				$scope.chartAxisFormat = $scope.chartVotePercentageFormat;
-				// $scope.chart.flush();
 			}
-			console.log($scope.chart);
-			
+			$scope.chart.flush();
+			$scope.buildChart($scope.selectedChartType);
+		}
+
+		// TOGGLE CHART FORMAT
+		$scope.changeChartFormat = function (format) {
+			if (format == 'bar') {
+				$scope.selectedChartType = 'bar';
+			} else if (format == 'pie') {
+				$scope.selectedChartType = 'pie';
+			}
+			$scope.chart.flush();
+			$scope.buildChart($scope.selectedChartType);
+		}
+
+		// TOGGLE RESULTS SORTING
+		$scope.sortResults = function (sortBy) {
+			if (sortBy == 'none') {
+				$scope.sortResultsBy = 'none';
+			} else if (sortBy == 'alphabetical') {
+				$scope.sortResultsBy = 'alphabetical';
+			} else if (sortBy == 'number') {
+				$scope.sortResultsBy = 'number';
+			}
+			$scope.chart.flush();
+			$scope.buildChart($scope.selectedChartType);
 		}
 
 		// GET A SINGLE POLL FOR THAT USER
