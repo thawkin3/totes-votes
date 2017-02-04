@@ -34,7 +34,26 @@
 		$scope.removeChoice = function (index) {
 			if ($scope.choices.length > 1) {
 				$scope.choices.splice(index,1);
-				$scope.votes.splice(index+1,1);
+				$scope.votes.splice(index,1);
+			}
+		}
+
+		// MOVE CHOICE
+		$scope.moveChoice = function (index, direction) {
+			if (direction == 'up') {
+				if (index > 0) {
+					var movedChoice = $scope.choices.splice(index, 1)[0];
+					var movedVote = $scope.votes.splice(index, 1)[0];
+					$scope.choices.splice(index-1,0,movedChoice);
+					$scope.votes.splice(index+1,0,movedVote);
+				}
+			} else if (direction == 'down') {
+				if (index < $scope.choices.length - 1) {
+					var movedChoice = $scope.choices.splice(index, 1)[0];
+					var movedVote = $scope.votes.splice(index, 1)[0];
+					$scope.choices.splice(index+1,0,movedChoice);
+					$scope.votes.splice(index+1,0,movedVote);
+				}
 			}
 		}
 

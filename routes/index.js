@@ -26,6 +26,7 @@ db.once('open', function() {
   console.log('Connected');
 });
 
+/* POST to create a new user */
 router.post('/api/v1/users/register', function(req, res) {
   User.register(new User({ username: req.body.username }),
     req.body.password, function(err, account) {
@@ -43,6 +44,7 @@ router.post('/api/v1/users/register', function(req, res) {
   });
 });
 
+/* POST to login as an existing user */
 router.post('/api/v1/users/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -67,6 +69,7 @@ router.post('/api/v1/users/login', function(req, res, next) {
   })(req, res, next);
 });
 
+/* GET to logout */
 router.get('/api/v1/users/logout', function(req, res) {
   req.logout();
   res.status(200).json({
@@ -74,6 +77,7 @@ router.get('/api/v1/users/logout', function(req, res) {
   });
 });
 
+/* GET user's current login status */
 router.get('/api/v1/users/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -94,7 +98,6 @@ router.post('/api/v1/polls', function(req, res, next) {
 
   var newPoll = new Poll(req.body);
   console.log(newPoll);
-  console.log(req.body.Poll);
   
   newPoll.save(true, function(err, post) {
     // if (err) return console.error(err);

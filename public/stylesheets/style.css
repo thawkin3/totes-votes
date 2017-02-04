@@ -22,6 +22,7 @@ html, body {
 .allPages .title .subtitle {
 	font-size: 26px;
     font-style: italic;
+    display: inline-block;
 }
 .allPages .navbar .buttonSet {
 	display: inline-block;
@@ -48,6 +49,26 @@ html, body {
 	border-radius: 4px;
 	margin: 30px auto;
 	padding: 10px 20px;
+}
+.btn-grey {
+	color: #fff;
+    background-color: #333;
+    border-color: #444;
+}
+.btn-grey:hover {
+	color: #fff;
+    background-color: #222;
+    border-color: #333;
+}
+.btn-grey:active, .btn-grey.active {
+	color: #fff;
+    background-color: #111;
+    border-color: #222;
+}
+.btn-grey.focus, .btn-grey:focus {
+    color: #fff;
+    background-color: #111;
+    border-color: #222;
 }
 
 
@@ -95,6 +116,9 @@ html, body {
     width: 100%;
     margin: 40px auto;
 }
+.createPollContent #createPollForm .form-group, .editPollContent #editPollForm .form-group {
+	margin-bottom: 10px;
+}
 .createPollContent #createPollForm #questionText, .editPollContent #editPollForm #questionText {
 	margin-bottom: 30px;
 }
@@ -103,7 +127,8 @@ html, body {
 	max-width: 260px;
 	display: inline-block;
 }
-.createPollContent #createPollForm button.plus-minus, .editPollContent #editPollForm button.plus-minus {
+.createPollContent #createPollForm button.plus-minus, .editPollContent #editPollForm button.plus-minus, 
+.createPollContent #createPollForm button.arrows, .editPollContent #editPollForm button.arrows {
 	position: relative;
 	top: -1px;
 }
@@ -123,6 +148,41 @@ html, body {
 }
 .createPollContent #createPollForm button[type=submit], .editPollContent #editPollForm button[type=submit] {
 	margin-top: 30px;
+}
+.arrowButtonsContainer {
+	display: inline-block;
+	height: 34px;
+	width: 40px;
+}
+.arrowButtonsContainer button.arrows {
+	height: 16px;
+    font-size: 8px;
+    margin: 0px;
+    padding: 4px;
+    width: 100%;
+    position: relative;
+    top: 9px !important;
+    display: block;
+    margin-left: -1px;
+}
+.arrowButtonsContainer button.arrows.arrow-top {
+	margin-bottom: 2px;
+}
+.arrowButtonsContainer button.arrows.arrow-bottom {
+	margin-bottom: 0px;
+}
+.arrowButtonsContainer button.arrows.arrow-top .glyphicon-triangle-top {
+	top: -1px;
+}
+.arrowButtonsContainer button.arrows.arrow-bottom .glyphicon-triangle-bottom {
+	top: -1px;
+}
+
+@media screen and (max-width: 600px) {
+	.createPollContent #createPollForm .answerChoice, .editPollContent #editPollForm .answerChoice {
+		width: 78%;
+		max-width: 150px;
+	}
 }
 
 

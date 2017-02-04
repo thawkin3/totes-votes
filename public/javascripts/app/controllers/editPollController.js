@@ -43,6 +43,25 @@
 						$scope.poll.totalVotes -= decrementTotalVotesBy;
 					}
 				}
+
+				// MOVE CHOICE
+				$scope.moveChoice = function (index, direction) {
+					if (direction == 'up') {
+						if (index > 0) {
+							var movedChoice = $scope.poll.choices.splice(index, 1)[0];
+							var movedVote = $scope.poll.votes.splice(index, 1)[0];
+							$scope.poll.choices.splice(index-1,0,movedChoice);
+							$scope.poll.votes.splice(index+1,0,movedVote);
+						}
+					} else if (direction == 'down') {
+						if (index < $scope.poll.choices.length - 1) {
+							var movedChoice = $scope.poll.choices.splice(index, 1)[0];
+							var movedVote = $scope.poll.votes.splice(index, 1)[0];
+							$scope.poll.choices.splice(index+1,0,movedChoice);
+							$scope.poll.votes.splice(index+1,0,movedVote);
+						}
+					}
+				}
 			}
 		}
 
