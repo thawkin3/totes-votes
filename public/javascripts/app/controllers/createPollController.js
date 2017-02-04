@@ -1,6 +1,6 @@
 (function() {
 
-	var createPollController = function ($scope, $routeParams, $rootScope, $http, $location) {
+	var createPollController = function ($scope, $rootScope, $http, $location) {
 
 		// USERNAME
 		$scope.username = $rootScope.loggedInUser;
@@ -79,7 +79,7 @@
 
 	};
 
-	createPollController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location'];
+	createPollController.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
 	angular.module('TotesVotes')
 	    .controller('createPollController', createPollController);

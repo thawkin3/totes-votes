@@ -3,22 +3,28 @@
         <div class="row">
             <div class="text-center pollResultsContent">
 
-            	<div class="graphButtons">
-                    <div class="buttonsRow dataFormat">
-                        <span class="buttonLabel">Data Format:</span>
-            	        <a class="btn btn-large btn-info navbar-btn" ng-click="changeDataFormat('count')" ng-show="showResultsGraph" ng-class="{'selected': selectedFormat == 'count'}">Count</a>
-            	        <a class="btn btn-large btn-info navbar-btn" ng-click="changeDataFormat('percentage')" ng-show="showResultsGraph" ng-class="{'selected': selectedFormat == 'percentage'}">Percentage</a>
+                <div class="graphButtonsContainer" ng-show="showResultsGraph">
+                	<div class="showOptionsButtonContainer">
+                        <a class="btn btn-large btn-info navbar-btn" ng-click="showGraphOptions = !showGraphOptions" ng-show="!showGraphOptions">Show Graph Options</a>
+                        <a class="btn btn-large btn-danger navbar-btn" ng-click="showGraphOptions = !showGraphOptions" ng-show="showGraphOptions">Hide Graph Options</a>
                     </div>
-                    <div class="buttonsRow chartFormat">
-                        <span class="buttonLabel">Chart Format:</span>
-                        <a class="btn btn-large btn-info navbar-btn" ng-click="changeChartFormat('bar')" ng-show="showResultsGraph" ng-class="{'selected': selectedChartType == 'bar'}">Bar Chart</a>
-                        <a class="btn btn-large btn-info navbar-btn" ng-click="changeChartFormat('pie')" ng-show="showResultsGraph" ng-class="{'selected': selectedChartType == 'pie'}">Pie Chart</a>
-                    </div>
-                    <div class="buttonsRow sortResultsBy">
-                        <span class="buttonLabel">Sort Results:</span>
-                        <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('none')" ng-show="showResultsGraph" ng-class="{'selected': sortResultsBy == 'none'}">None</a>
-                        <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('number')" ng-show="showResultsGraph" ng-class="{'selected': sortResultsBy == 'number'}">Highest to Lowest</a>
-                        <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('alphabetical')" ng-show="showResultsGraph" ng-class="{'selected': sortResultsBy == 'alphabetical'}">Alphabetically</a>
+                    <div class="graphButtons" ng-show="showGraphOptions">
+                        <div class="buttonsRow dataFormat">
+                            <span class="buttonLabel">Data Format:</span>
+                	        <a class="btn btn-large btn-info navbar-btn" ng-click="changeDataFormat('count')" ng-class="{'selected': selectedFormat == 'count'}">Count</a>
+                	        <a class="btn btn-large btn-info navbar-btn" ng-click="changeDataFormat('percentage')" ng-class="{'selected': selectedFormat == 'percentage'}">Percentage</a>
+                        </div>
+                        <div class="buttonsRow chartFormat">
+                            <span class="buttonLabel">Chart Format:</span>
+                            <a class="btn btn-large btn-info navbar-btn" ng-click="changeChartFormat('bar')" ng-class="{'selected': selectedChartType == 'bar'}">Bar Chart</a>
+                            <a class="btn btn-large btn-info navbar-btn" ng-click="changeChartFormat('pie')" ng-class="{'selected': selectedChartType == 'pie'}">Pie Chart</a>
+                        </div>
+                        <div class="buttonsRow sortResultsBy">
+                            <span class="buttonLabel">Sort Results:</span>
+                            <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('none')" ng-class="{'selected': sortResultsBy == 'none'}">None</a>
+                            <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('number')" ng-class="{'selected': sortResultsBy == 'number'}">Highest to Lowest</a>
+                            <a class="btn btn-large btn-info navbar-btn" ng-click="sortResults('alphabetical')" ng-class="{'selected': sortResultsBy == 'alphabetical'}">Alphabetically</a>
+                        </div>
                     </div>
                 </div>
 

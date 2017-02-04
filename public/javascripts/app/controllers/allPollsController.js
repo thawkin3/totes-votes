@@ -1,6 +1,6 @@
 (function() {
 
-	var allPollsController = function ($scope, $routeParams, $rootScope, $http, $location) {
+	var allPollsController = function ($scope, $rootScope, $http, $location) {
 
 		// GET THE CURRENT USER'S USERNAME
 		$scope.username = $rootScope.loggedInUser;
@@ -105,7 +105,7 @@
 		}
 	};
 
-	allPollsController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location'];
+	allPollsController.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
 	angular.module('TotesVotes')
 	    .controller('allPollsController', allPollsController);

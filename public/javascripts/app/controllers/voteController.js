@@ -1,6 +1,6 @@
 (function() {
 
-	var voteController = function ($scope, $routeParams, $rootScope, $http, $location) {
+	var voteController = function ($scope, $routeParams, $http, $location) {
 
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showPollVoteOptions = false;
@@ -87,7 +87,7 @@
 
 	};
 
-	voteController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location'];
+	voteController.$inject = ['$scope', '$routeParams', '$http', '$location'];
 
 	angular.module('TotesVotes')
 	    .controller('voteController', voteController);

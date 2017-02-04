@@ -1,6 +1,6 @@
 (function() {
 
-	var createAccountController = function ($scope, $routeParams, $rootScope, $http, $location, AuthService) {
+	var createAccountController = function ($scope, $http, $location, AuthService) {
 
 		// HIDE ALL ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageMissingUsername = false;
@@ -50,27 +50,19 @@
 				console.log("passwords do not match");
 				$scope.showErrorMessageNonMatchingPasswords = true;
 			} else {
-				// initial values
+				// INITIAL VALUES
 			    $scope.error = false;
 			    $scope.disabled = true;
 
-			    // call register from service
+			    // CALL REGISTER FROM AUTHSERVICE
 			    AuthService.register($scope.username, $scope.password)
 			    .then(userCreationSuccess, userCreationError);
-
-
-				// $http.post('/api/v1/users/register',
-				// 	{
-				// 		username: $scope.username,
-				// 		password: $scope.password
-				// 	}
-				// ).then(userCreationSuccess, userCreationError);
 			}
 		}
 
 	};
 
-	createAccountController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location', 'AuthService'];
+	createAccountController.$inject = ['$scope', '$http', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('createAccountController', createAccountController);

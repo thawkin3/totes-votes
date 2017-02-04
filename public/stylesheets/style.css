@@ -265,6 +265,21 @@ html, body {
 .pollResultsContent .c3-tooltip-container {
 	color: #000;
 }
+.pollResultsContent .graphButtonsContainer {
+	text-align: right;
+	margin-bottom: 20px;
+	position: relative;
+}
+.pollResultsContent .graphButtons {
+	display: inline-block;
+	padding: 10px;
+    border: solid 3px #333;
+    border-radius: 6px;
+    position: absolute;
+    right: 0px;
+    background: #337ab7;
+    z-index: 100;
+}
 .pollResultsContent .graphButtons .buttonsRow {
 	text-align: right;
 }

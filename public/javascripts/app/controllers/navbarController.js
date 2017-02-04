@@ -1,6 +1,6 @@
 (function() {
 
-	var navbarController = function ($scope, $routeParams, $rootScope, $location, AuthService) {
+	var navbarController = function ($scope, $rootScope, $location, AuthService) {
 
 		$scope.logout = function () {
 
@@ -16,7 +16,7 @@
 
 	};
 
-	navbarController.$inject = ['$scope', '$routeParams', '$rootScope', '$location', 'AuthService'];
+	navbarController.$inject = ['$scope', '$rootScope', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('navbarController', navbarController);

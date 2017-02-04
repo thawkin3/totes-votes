@@ -1,6 +1,6 @@
 (function() {
 
-	var loginController = function ($scope, $routeParams, $rootScope, $location, AuthService) {
+	var loginController = function ($scope, $rootScope, $location, AuthService) {
 
 		$scope.goToCreateAccount = function () {
 			$location.path("/createAccount");
@@ -40,7 +40,7 @@
 
 	};
 
-	loginController.$inject = ['$scope', '$routeParams', '$rootScope', '$location', 'AuthService'];
+	loginController.$inject = ['$scope', '$rootScope', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('loginController', loginController);

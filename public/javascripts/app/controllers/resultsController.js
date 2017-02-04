@@ -1,9 +1,10 @@
 (function() {
 
-	var resultsController = function ($scope, $routeParams, $rootScope, $http, $location) {
+	var resultsController = function ($scope, $routeParams, $http) {
 
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showResultsGraph = false;
+		$scope.showGraphOptions = false;
 
 		// HIDE ALL ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageCannotGetPoll = false;
@@ -290,7 +291,7 @@
 			}
 		}
 		sortingBarChartNumericallyAlgorithm = function (a, b) {
-			return a[1]-b[1];
+			return b[1]-a[1];
 		}
 
 		// SORT PIE CHART FUNCTIONS
@@ -302,7 +303,7 @@
 			}
 		}
 		sortingPieChartNumericallyAlgorithm = function (a, b) {
-			return a[1]-b[1];
+			return b[1]-a[1];
 		}
 
 
@@ -311,7 +312,7 @@
 
 	};
 
-	resultsController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location'];
+	resultsController.$inject = ['$scope', '$routeParams', '$http'];
 
 	angular.module('TotesVotes')
 	    .controller('resultsController', resultsController);
