@@ -1,9 +1,7 @@
 (function() {
-
 	var loginController = function ($scope, $rootScope, $location, AuthService) {
-
 		$scope.goToCreateAccount = function () {
-			$location.path("/createAccount");
+			$location.path('/createAccount');
 		}
 
 		$scope.login = function () {
@@ -17,32 +15,27 @@
 	        // handle success
 	        .then(function () {
 	        	$scope.error = false;
-	        	$scope.errorMessage = "";
+	        	$scope.errorMessage = '';
 	        	$scope.disabled = false;
-	        	$scope.username = "";
-	        	$scope.password = "";
-	        	console.log(AuthService.isLoggedIn());
-	        	console.log(AuthService.getUsername());
+	        	$scope.username = '';
+	        	$scope.password = '';
 	        	$rootScope.isLoggedIn = AuthService.isLoggedIn();
 	        	$rootScope.loggedInUser = AuthService.getUsername();
-	        	$location.path("/home");
+	        	$location.path('/home');
 	        })
 	        // handle error
 	        .catch(function () {
 	        	$scope.error = true;
-	        	$scope.errorMessage = "Invalid username and/or password";
+	        	$scope.errorMessage = 'Invalid username and/or password';
 	        	$scope.disabled = false;
-	        	$scope.username = "";
-	        	$scope.password = "";
+	        	$scope.username = '';
+	        	$scope.password = '';
 	        });
-
 		};
-
 	};
 
 	loginController.$inject = ['$scope', '$rootScope', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('loginController', loginController);
-
 }());

@@ -46,7 +46,6 @@ angular.module('TotesVotes').factory('AuthService',
     }
 
     function login (username, password) {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
@@ -75,11 +74,9 @@ angular.module('TotesVotes').factory('AuthService',
 
       // return promise object
       return deferred.promise;
-
     }
 
     function logout () {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
@@ -100,11 +97,9 @@ angular.module('TotesVotes').factory('AuthService',
 
       // return promise object
       return deferred.promise;
-
     }
 
     function register (username, password) {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
@@ -126,7 +121,5 @@ angular.module('TotesVotes').factory('AuthService',
 
       // return promise object
       return deferred.promise;
-
     }
-
 }]);

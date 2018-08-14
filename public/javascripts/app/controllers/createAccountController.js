@@ -1,7 +1,5 @@
 (function() {
-
 	var createAccountController = function ($scope, $http, $location, AuthService) {
-
 		// HIDE ALL ERROR MESSAGES BY DEFAULT
 		$scope.showErrorMessageMissingUsername = false;
 		$scope.showErrorMessageUsernameTaken = false;
@@ -10,25 +8,23 @@
 
 		// SUCCESS CALLBACK
 		function userCreationSuccess () {
-			console.log("user created!");
     		$scope.error = false;
-            $scope.errorMessage = "";
+            $scope.errorMessage = '';
 	        $scope.disabled = false;
-        	$scope.username = "";
-        	$scope.password = "";
-	        $scope.passwordSecond = "";
-			$location.path("/login");
+        	$scope.username = '';
+        	$scope.password = '';
+	        $scope.passwordSecond = '';
+			$location.path('/login');
 		}
 
 		// ERROR CALLBACK
 		function userCreationError () {
-			console.log("username taken");
 			$scope.error = true;
-	        $scope.errorMessage = "Something went wrong!";
+	        $scope.errorMessage = 'Something went wrong!';
 	        $scope.disabled = false;
-	        $scope.username = "";
-	        $scope.password = "";
-	        $scope.passwordSecond = "";
+	        $scope.username = '';
+	        $scope.password = '';
+	        $scope.passwordSecond = '';
 			$scope.showErrorMessageUsernameTaken = true;
 		}
 
@@ -40,14 +36,11 @@
 			$scope.showErrorMessageMissingPassword = false;
 			$scope.showErrorMessageNonMatchingPasswords = false;
 
-			if ($scope.username == "" || $scope.username == undefined) {
-				console.log("please enter a username");
+			if ($scope.username == '' || $scope.username == undefined) {
 				$scope.showErrorMessageMissingUsername = true;
-			} else if ($scope.password == "" || $scope.password == undefined) {
-				console.log("please enter a password");
+			} else if ($scope.password == '' || $scope.password == undefined) {
 				$scope.showErrorMessageMissingPassword = true;
 			} else if ($scope.password != $scope.passwordSecond) {
-				console.log("passwords do not match");
 				$scope.showErrorMessageNonMatchingPasswords = true;
 			} else {
 				// INITIAL VALUES
@@ -59,12 +52,10 @@
 			    .then(userCreationSuccess, userCreationError);
 			}
 		}
-
 	};
 
 	createAccountController.$inject = ['$scope', '$http', '$location', 'AuthService'];
 
 	angular.module('TotesVotes')
 	    .controller('createAccountController', createAccountController);
-
 }());
