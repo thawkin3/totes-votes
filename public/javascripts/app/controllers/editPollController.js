@@ -1,7 +1,5 @@
 (function() {
-
 	var editPollController = function ($scope, $routeParams, $rootScope, $http, $location) {
-
 		// GET THE CURRENT USER'S USERNAME
 		$scope.username = $rootScope.loggedInUser;
 
@@ -17,10 +15,8 @@
 		// SUCCESS CALLBACK
 		function getPollSuccess (response) {
 			$scope.showErrorMessageCannotGetPoll = false;
-			console.log(response);
 			$scope.poll = response.data;
-			console.log($scope.poll);
-			if ($scope.poll.length == 0) {
+			if ($scope.poll.length === 0) {
 				$scope.showErrorMessageCannotGetPoll = true;
 				$scope.pollExists = false;
 			} else {
@@ -30,16 +26,16 @@
 				// ADD CHOICE
 				$scope.addChoice = function (index) {
 					var numberOfChoices = $scope.poll.choices.length + 1;
-					$scope.poll.choices.splice(index+1,0,"Answer Choice " + numberOfChoices);
-					$scope.poll.votes.splice(index+1,0,0);
+					$scope.poll.choices.splice(index + 1, 0, 'Answer Choice ' + numberOfChoices);
+					$scope.poll.votes.splice(index + 1, 0, 0);
 				}
 
 				// REMOVE CHOICE
 				$scope.removeChoice = function (index) {
 					if ($scope.poll.choices.length > 1) {
-						$scope.poll.choices.splice(index,1);
+						$scope.poll.choices.splice(index, 1);
 						var decrementTotalVotesBy = $scope.poll.votes[index];
-						$scope.poll.votes.splice(index,1);
+						$scope.poll.votes.splice(index, 1);
 						$scope.poll.totalVotes -= decrementTotalVotesBy;
 					}
 				}
@@ -50,15 +46,15 @@
 						if (index > 0) {
 							var movedChoice = $scope.poll.choices.splice(index, 1)[0];
 							var movedVote = $scope.poll.votes.splice(index, 1)[0];
-							$scope.poll.choices.splice(index-1,0,movedChoice);
-							$scope.poll.votes.splice(index+1,0,movedVote);
+							$scope.poll.choices.splice(index - 1, 0, movedChoice);
+							$scope.poll.votes.splice(index + 1, 0, movedVote);
 						}
 					} else if (direction == 'down') {
 						if (index < $scope.poll.choices.length - 1) {
 							var movedChoice = $scope.poll.choices.splice(index, 1)[0];
 							var movedVote = $scope.poll.votes.splice(index, 1)[0];
-							$scope.poll.choices.splice(index+1,0,movedChoice);
-							$scope.poll.votes.splice(index+1,0,movedVote);
+							$scope.poll.choices.splice(index + 1, 0, movedChoice);
+							$scope.poll.votes.splice(index + 1, 0, movedVote);
 						}
 					}
 				}
@@ -67,19 +63,16 @@
 
 		// ERROR CALLBACK
 		function getPollError (response) {
-			console.error("error in getting poll");
 			$scope.showErrorMessageCannotGetPoll = true;
 		}
 
 		// SUCCESS CALLBACK
 		function updatePollSuccess (response) {
-			console.log(response.data);
-			$location.path("/allPolls");
+			$location.path('/allPolls');
 		}
 
 		// ERROR CALLBACK
 		function updatePollError (response) {
-			console.error("error in updating poll");
 			$scope.showErrorMessageCannotUpdatePoll = true;
 		}
 
@@ -92,11 +85,11 @@
 			$scope.showErrorMessageLessThanTwoChoices = false;
 			$scope.showErrorMessageEmptyChoices = false;
 
-			if ($scope.poll.question == "" || $scope.poll.question == undefined) {
+			if (!$scope.poll.question) {
 				$scope.showErrorMessageMissingQuestionText = true;
 			} else if ($scope.poll.choices.length < 2) {
 				$scope.showErrorMessageLessThanTwoChoices = true;
-			} else if ($scope.poll.choices.indexOf("") != -1) {
+			} else if ($scope.poll.choices.indexOf('') !== -1) {
 				$scope.showErrorMessageEmptyChoices = true;
 			} else {
 				$http.put('/api/v1/polls/' + $scope.username + '/' + $routeParams.pollId,
@@ -106,17 +99,15 @@
 						choices: $scope.poll.choices,
 						votes: $scope.poll.votes,
 						totalVotes: $scope.poll.totalVotes,
-						allowNewChoices: $scope.poll.allowNewChoices
+						allowNewChoices: $scope.poll.allowNewChoices,
 					}
 				).then(updatePollSuccess, updatePollError);
 			}
 		}
-
 	};
 
 	editPollController.$inject = ['$scope', '$routeParams', '$rootScope', '$http', '$location'];
 
 	angular.module('TotesVotes')
 	    .controller('editPollController', editPollController);
-
 }());

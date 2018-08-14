@@ -23,7 +23,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 // Lets us know when we're connected
 db.once('open', function() {
-  console.log('Connected');
+  console.log('Connected to database');
 });
 
 /* POST to create a new user */
@@ -93,33 +93,24 @@ router.get('/api/v1/users/status', function(req, res) {
 
 /* POST a new poll */
 router.post('/api/v1/polls', function(req, res, next) {
-  console.log("POST create poll route");
-  console.log(req.body);
-
   var newPoll = new Poll(req.body);
-  console.log(newPoll);
   
   newPoll.save(true, function(err, post) {
-    // if (err) return console.error(err);
     if (err) res.sendStatus(500);
-    console.log(post);
-    // res.sendStatus(200);
     res.json(post);
   });
 });
 
 /* GET all polls for a user */
 router.get('/api/v1/polls/:username', function(req, res, next) {
-	console.log("GET polls route");
 	var query = Poll.find({ username: req.params.username }).sort({ questionText: 1 });
 	query.exec(function(err, polls) {
 			// If there's an error, print it out
-			// if (err) return console.error(err);
 			if (err) {
 				res.sendStatus(404);
 			// Otherwise, return all the polls for that user
 			} else {
-			    res.json(polls);
+		    res.json(polls);
 			}
 
 	});
@@ -127,16 +118,14 @@ router.get('/api/v1/polls/:username', function(req, res, next) {
 
 /* GET a single poll for a user */
 router.get('/api/v1/polls/:username/:pollId', function(req, res, next) {
-	console.log("GET single poll route");
 	var query = Poll.findOne({ username: req.params.username, _id: req.params.pollId });
 	query.exec(function(err, poll) {
 			// If there's an error, print it out
-			// if (err) return console.error(err);
 			if (err) {
 				res.sendStatus(404);
 			// Otherwise, return the single poll for that user
 			} else {
-			    res.json(poll);
+		    res.json(poll);
 			}
 
 	});
@@ -146,11 +135,9 @@ router.get('/api/v1/polls/:username/:pollId', function(req, res, next) {
 /* ALSO */
 /* PUT a single poll for a participant to vote on that poll */
 router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
-	console.log("PUT single poll route");
 	var query = Poll.findOne({ username: req.params.username, _id: req.params.pollId });
 	query.exec(function(err, updatedPoll) {
 			// If there's an error, print it out
-			// if (err) return console.error(err);
 			if (err) {
 				res.sendStatus(404);
 			// Otherwise, update the single poll for that user
@@ -162,9 +149,8 @@ router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
 				if (req.body.totalVotes != undefined) updatedPoll.totalVotes = req.body.totalVotes;
 				if (req.body.allowNewChoices != undefined) updatedPoll.allowNewChoices = req.body.allowNewChoices;
 				updatedPoll.save(true, function(err, put) {
-				    if (err) return console.error(err);
-				    console.log(put);
-				    res.sendStatus(200);
+			    if (err) return res.sendStatus(500);
+			    res.sendStatus(200);
 				});
 			}
 
@@ -173,11 +159,9 @@ router.put('/api/v1/polls/:username/:pollId', function(req, res, next) {
 
 /* DELETE a single poll for a user */
 router.delete('/api/v1/polls/:username/:pollId', function(req, res, next) {
-	console.log("DELETE single poll route");
 	var query = Poll.remove({ username: req.params.username, _id: req.params.pollId });
 	query.exec(function(err) {
 			// If there's an error, print it out
-			// if (err) return console.error(err);
 			if (err) {
 				res.sendStatus(500);
 			// Otherwise, delete the single poll for that user

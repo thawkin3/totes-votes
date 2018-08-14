@@ -1,14 +1,12 @@
 (function() {
-
 	var createPollController = function ($scope, $rootScope, $http, $location) {
-
 		// USERNAME
 		$scope.username = $rootScope.loggedInUser;
 
 		// INITIALIZE THE CHOICES ARRAY WITH TWO CHOICES
 		$scope.choices = [
-			"Answer Choice 1",
-			"Answer Choice 2"
+			'Answer Choice 1',
+			'Answer Choice 2',
 		];
 
 		// INITIALIZE THE VOTES ARRAY WITH ZERO VOTES PER CHOICE
@@ -26,15 +24,15 @@
 		// ADD CHOICE
 		$scope.addChoice = function (index) {
 			var numberOfChoices = $scope.choices.length + 1;
-			$scope.choices.splice(index+1,0,"Answer Choice " + numberOfChoices);
-			$scope.votes.splice(index+1,0,0);
+			$scope.choices.splice(index + 1, 0, 'Answer Choice ' + numberOfChoices);
+			$scope.votes.splice(index + 1, 0, 0);
 		}
 
 		// REMOVE CHOICE
 		$scope.removeChoice = function (index) {
 			if ($scope.choices.length > 1) {
-				$scope.choices.splice(index,1);
-				$scope.votes.splice(index,1);
+				$scope.choices.splice(index, 1);
+				$scope.votes.splice(index, 1);
 			}
 		}
 
@@ -44,28 +42,26 @@
 				if (index > 0) {
 					var movedChoice = $scope.choices.splice(index, 1)[0];
 					var movedVote = $scope.votes.splice(index, 1)[0];
-					$scope.choices.splice(index-1,0,movedChoice);
-					$scope.votes.splice(index+1,0,movedVote);
+					$scope.choices.splice(index - 1, 0, movedChoice);
+					$scope.votes.splice(index + 1, 0, movedVote);
 				}
 			} else if (direction == 'down') {
 				if (index < $scope.choices.length - 1) {
 					var movedChoice = $scope.choices.splice(index, 1)[0];
 					var movedVote = $scope.votes.splice(index, 1)[0];
-					$scope.choices.splice(index+1,0,movedChoice);
-					$scope.votes.splice(index+1,0,movedVote);
+					$scope.choices.splice(index + 1, 0, movedChoice);
+					$scope.votes.splice(index + 1, 0, movedVote);
 				}
 			}
 		}
 
 		// SUCCESS CALLBACK
 		function pollCreationSuccess (response) {
-			console.log(response.data);
-			$location.path("/allPolls");
+			$location.path('/allPolls');
 		}
 
 		// ERROR CALLBACK
 		function pollCreationError (response) {
-			console.error("error in creating poll");
 			$scope.showErrorMessageUsernameTaken = true;
 		}
 
@@ -76,11 +72,11 @@
 			$scope.showErrorMessageLessThanTwoChoices = false;
 			$scope.showErrorMessageEmptyChoices = false;
 
-			if ($scope.questionText == "" || $scope.questionText == undefined) {
+			if (!$scope.questionText) {
 				$scope.showErrorMessageMissingQuestionText = true;
 			} else if ($scope.choices.length < 2) {
 				$scope.showErrorMessageLessThanTwoChoices = true;
-			} else if ($scope.choices.indexOf("") != -1) {
+			} else if ($scope.choices.indexOf('') !== -1) {
 				$scope.showErrorMessageEmptyChoices = true;
 			} else {
 				$http.post('/api/v1/polls',
@@ -90,17 +86,15 @@
 						choices: $scope.choices,
 						votes: $scope.votes,
 						totalVotes: $scope.totalVotes,
-						allowNewChoices: $scope.allowNewChoices
+						allowNewChoices: $scope.allowNewChoices,
 					}
 				).then(pollCreationSuccess, pollCreationError);
 			}
 		}
-
 	};
 
 	createPollController.$inject = ['$scope', '$rootScope', '$http', '$location'];
 
 	angular.module('TotesVotes')
 	    .controller('createPollController', createPollController);
-
 }());

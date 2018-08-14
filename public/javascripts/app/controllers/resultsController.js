@@ -1,7 +1,5 @@
 (function() {
-
 	var resultsController = function ($scope, $routeParams, $http) {
-
 		// HIDE ALL CONTENT BY DEFAULT
 		$scope.showResultsGraph = false;
 		$scope.showGraphOptions = false;
@@ -22,9 +20,7 @@
 		// SUCCESS CALLBACK
 		function getPollSuccess (response) {
 			$scope.showErrorMessageCannotGetPoll = false;
-			console.log(response);
 			$scope.poll = response.data;
-			console.log($scope.poll);
 			if ($scope.poll.length == 0) {
 				$scope.showErrorMessageCannotGetPoll = true;
 			} else {
@@ -33,11 +29,11 @@
 				} else {
 					// SET UP YOUR DATA TO BE IN THE FORMAT WE NEED
 					// BAR CHART COUNTS
-					$scope.xAxisLabelArray = ["x"];
-					$scope.columnsLabelArray = ["Votes"];
+					$scope.xAxisLabelArray = ['x'];
+					$scope.columnsLabelArray = ['Votes'];
 					$scope.chartXAxis = $scope.xAxisLabelArray.concat($scope.poll.choices);
 					$scope.chartVoteCounts = $scope.columnsLabelArray.concat($scope.poll.votes);
-					$scope.chartVoteCountFormat = ",";
+					$scope.chartVoteCountFormat = ',';
 
 					// BAR CHART PERCENTAGES
 					$scope.poll.votePercentages = [];
@@ -45,7 +41,7 @@
 						$scope.poll.votePercentages.push(parseFloat($scope.poll.votes[i] / $scope.poll.totalVotes));
 					}
 					$scope.chartVotePercentages = $scope.columnsLabelArray.concat($scope.poll.votePercentages)
-					$scope.chartVotePercentageFormat = "%,";
+					$scope.chartVotePercentageFormat = '%,';
 
 					// PIE CHART COUNTS AND PERCENTAGES
 					$scope.pieChartCounts = [];
@@ -93,7 +89,7 @@
 							        type: 'bar',
 							        // empty: {
 							        // 	label: {
-							        //     	text: "No Data"
+							        //     	text: 'No Data'
 							        // 	}
 						        	// }
 							    },
@@ -181,18 +177,16 @@
 								    pie: {
 								    	label: {
 						    	            format: function (value, ratio, id) {
-						    	                return d3.format(",.1%")(ratio);
+						    	                return d3.format(',.1%')(ratio);
 						    	            }
 						    	        }
 								    }
 								});
 							}
 						}
-
 					}
 
 					$scope.buildChart('bar');
-
 					$scope.showResultsGraph = true;
 				}
 			}
@@ -200,7 +194,6 @@
 
 		// ERROR CALLBACK
 		function getPollError (response) {
-			console.error("error in getting poll");
 			$scope.showErrorMessageCannotGetPoll = true;
 		}
 
@@ -306,15 +299,12 @@
 			return b[1]-a[1];
 		}
 
-
 		// GET A SINGLE POLL FOR THAT USER
 		$http.get('/api/v1/polls/' + $routeParams.username + '/' + $routeParams.pollId).then(getPollSuccess, getPollError);
-
 	};
 
 	resultsController.$inject = ['$scope', '$routeParams', '$http'];
 
 	angular.module('TotesVotes')
 	    .controller('resultsController', resultsController);
-
 }());

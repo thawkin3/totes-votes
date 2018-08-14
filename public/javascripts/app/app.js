@@ -57,7 +57,7 @@ app.run(function($rootScope, $location, $window, $route, AuthService) {
 	    .then(function () {
         	$rootScope.isLoggedIn = AuthService.isLoggedIn();
     		$rootScope.loggedInUser = AuthService.getUsername();
-		    if (typeof next.access != 'undefined' && next.access.restricted && !AuthService.isLoggedIn()) {
+		    if (typeof next.access !== 'undefined' && next.access.restricted && !AuthService.isLoggedIn()) {
     		// if (next.access.restricted && !AuthService.isLoggedIn()) {
     			$location.path('/login');
     			$route.reload();

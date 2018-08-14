@@ -1,7 +1,5 @@
 (function() {
-
 	var allPollsController = function ($scope, $rootScope, $http, $location) {
-
 		// GET THE CURRENT USER'S USERNAME
 		$scope.username = $rootScope.loggedInUser;
 
@@ -14,16 +12,14 @@
 		$scope.showPollsTable = false;
 
 		// DEFAULT SORT VALUES
-		$scope.sortPollsBy = "question";
+		$scope.sortPollsBy = 'question';
 		$scope.sortReverse = false;
-		$scope.searchText = "";
+		$scope.searchText = '';
 
 		// SUCCESS CALLBACK
 		function getAllPollsSuccess (response) {
 			$scope.showErrorMessageCannotGetPolls = false;
-			console.log(response);
 			$scope.allPolls = response.data;
-			console.log($scope.allPolls);
 			if ($scope.allPolls.length == 0) {
 				$scope.showNoPollsMessage = true;
 				$scope.showPollsTable = false;
@@ -35,20 +31,17 @@
 
 		// DELETE ERROR CALLBACK
 		function getAllPollsError (response) {
-			console.error("error in getting polls");
 			$scope.showErrorMessageCannotGetPolls = true;
 		}
 
 		// DELETE SUCCESS CALLBACK
 		function deletePollSuccess (response) {
 			$scope.showErrorMessageCannotDeletePoll = false;
-			console.log(response);
 			$http.get('/api/v1/polls/' + $scope.username).then(getAllPollsSuccess, getAllPollsError);
 		}
 
 		// ERROR CALLBACK
 		function deletePollError (response) {
-			console.error("error in deleting poll");
 			$scope.showErrorMessageCannotDeletePoll = true;
 		}
 
@@ -57,27 +50,27 @@
 
 		// EDIT POLL
 		$scope.editPoll = function (pollId) {
-			$location.path("edit/" + $scope.username + "/" + pollId);
+			$location.path('edit/' + $scope.username + '/' + pollId);
 		}
 
 		// VIEW POLL RESULTS
 		$scope.viewResults = function (pollId) {
-			$location.path("results/" + $scope.username + "/" + pollId);
+			$location.path('results/' + $scope.username + '/' + pollId);
 		}
 
 		// VOTE ON POLL
 		$scope.vote = function (pollId) {
-			$location.path("vote/" + $scope.username + "/" + pollId);
+			$location.path('vote/' + $scope.username + '/' + pollId);
 		}
 
 		// DELETE POLL
 		$scope.delete = function (pollId) {
-			$http.delete('/api/v1/polls/' + $scope.username + "/" + pollId).then(deletePollSuccess, deletePollError);
+			$http.delete('/api/v1/polls/' + $scope.username + '/' + pollId).then(deletePollSuccess, deletePollError);
 		}
 
 		// CREATE A NEW POLL
 		$scope.getStarted = function () {
-			$location.path("/createPoll");
+			$location.path('/createPoll');
 		}
 
 		// POLLS TABLE SORTING
@@ -92,7 +85,7 @@
 
 		// POLLS TABLE FILTERING
 		$scope.tableFilter = function (item, index) {
-			if ($scope.searchText != "") {
+			if ($scope.searchText != '') {
 				var searchString = $scope.searchText.toLowerCase();
 				if (item.question.toLowerCase().indexOf(searchString) != -1) {
 					return true;
@@ -109,5 +102,4 @@
 
 	angular.module('TotesVotes')
 	    .controller('allPollsController', allPollsController);
-
 }());
